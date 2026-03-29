@@ -1,0 +1,28 @@
+{
+  "run_id": 1,
+  "seed": 1042,
+  "data_files": {
+    "task1": "D:\\collections2026\\phd_application\\nanobot1\\personal\\isolated_experiment\\data\\task1_run1.csv",
+    "task2": "D:\\collections2026\\phd_application\\nanobot1\\personal\\isolated_experiment\\data\\task2_run1.csv",
+    "task4": "D:\\collections2026\\phd_application\\nanobot1\\personal\\isolated_experiment\\data\\task4_run1.csv"
+  },
+  "base_stats": {
+    "age": {
+      "mean": 35,
+      "std": 8
+    },
+    "income": {
+      "mean": 70000,
+      "std": 20000
+    },
+    "spending_score": {
+      "mean": 80,
+      "std": 12
+    },
+    "sales": {
+      "mean": 2000,
+      "std": 600
+    }
+  },
+  "generated_at": "2026-03-29 10:43:51"
+}

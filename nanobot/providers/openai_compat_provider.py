@@ -8,6 +8,8 @@ import secrets
 import string
 import uuid
 from collections.abc import Awaitable, Callable
+from datetime import datetime
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import json_repair
@@ -17,6 +19,22 @@ from nanobot.providers.base import LLMProvider, LLMResponse, ToolCallRequest
 
 if TYPE_CHECKING:
     from nanobot.providers.registry import ProviderSpec
+
+
+def _write_usage_to_file(usage: dict[str, int]) -> None:
+    """Write token usage to token_usage.txt file."""
+    try:
+        personal_dir = Path(__file__).parent.parent.parent / "personal"
+        personal_dir.mkdir(parents=True, exist_ok=True)
+        log_file = personal_dir / "token_usage.txt"
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        prompt = usage.get("prompt_tokens", 0)
+        completion = usage.get("completion_tokens", 0)
+        total = usage.get("total_tokens", prompt + completion)
+        with open(log_file, "a", encoding="utf-8") as f:
+            f.write(f"{timestamp} | prompt={prompt}, completion={completion}, total={total}\n")
+    except Exception:
+        pass
 
 _ALLOWED_MSG_KEYS = frozenset({
     "role", "content", "tool_calls", "tool_call_id", "name",
@@ -300,18 +318,22 @@ class OpenAICompatProvider(LLMProvider):
 
         usage_map = cls._maybe_mapping(usage_obj)
         if usage_map is not None:
-            return {
+            usage = {
                 "prompt_tokens": int(usage_map.get("prompt_tokens") or 0),
                 "completion_tokens": int(usage_map.get("completion_tokens") or 0),
                 "total_tokens": int(usage_map.get("total_tokens") or 0),
             }
+            _write_usage_to_file(usage)
+            return usage
 
         if usage_obj:
-            return {
+            usage = {
                 "prompt_tokens": getattr(usage_obj, "prompt_tokens", 0) or 0,
                 "completion_tokens": getattr(usage_obj, "completion_tokens", 0) or 0,
                 "total_tokens": getattr(usage_obj, "total_tokens", 0) or 0,
             }
+            _write_usage_to_file(usage)
+            return usage
         return {}
 
     def _parse(self, response: Any) -> LLMResponse:

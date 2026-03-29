@@ -18,6 +18,8 @@ from nanobot.agent.hook import AgentHook, AgentHookContext
 from nanobot.agent.memory import MemoryConsolidator
 from nanobot.agent.runner import AgentRunSpec, AgentRunner
 from nanobot.agent.subagent import SubagentManager
+from nanobot.agent.usage_hook import UsageLoggingHook
+from nanobot.agent.vector_memory import VectorMemoryManager
 from nanobot.agent.tools.cron import CronTool
 from nanobot.agent.skills import BUILTIN_SKILLS_DIR
 from nanobot.agent.tools.filesystem import EditFileTool, ListDirTool, ReadFileTool, WriteFileTool
@@ -124,6 +126,7 @@ class AgentLoop:
             get_tool_definitions=self.tools.get_definitions,
             max_completion_tokens=provider.generation.max_tokens,
         )
+        self.vector_memory_manager = VectorMemoryManager()
         self._register_default_tools()
         self.commands = CommandRouter()
         register_builtin_commands(self.commands)
@@ -209,6 +212,7 @@ class AgentLoop:
         channel: str = "cli",
         chat_id: str = "direct",
         message_id: str | None = None,
+        session_key: str | None = None,
     ) -> tuple[str | None, list[str], list[dict]]:
         """Run the agent iteration loop.
 
@@ -219,8 +223,10 @@ class AgentLoop:
         """
         loop_self = self
 
-        class _LoopHook(AgentHook):
+        class _LoopHook(AgentHook, UsageLoggingHook):
             def __init__(self) -> None:
+                AgentHook.__init__(self)
+                UsageLoggingHook.__init__(self)
                 self._stream_buf = ""
 
             def wants_streaming(self) -> bool:
@@ -414,6 +420,7 @@ class AgentLoop:
             final_content, _, all_msgs = await self._run_agent_loop(
                 messages, channel=channel, chat_id=chat_id,
                 message_id=msg.metadata.get("message_id"),
+                session_key=key,
             )
             self._save_turn(session, all_msgs, 1 + len(history))
             self.sessions.save(session)
@@ -447,6 +454,9 @@ class AgentLoop:
             media=msg.media if msg.media else None,
             channel=msg.channel, chat_id=msg.chat_id,
         )
+        initial_messages = await self.vector_memory_manager.inject_memory(
+            initial_messages, key
+        )
 
         async def _bus_progress(content: str, *, tool_hint: bool = False) -> None:
             meta = dict(msg.metadata or {})
@@ -463,6 +473,7 @@ class AgentLoop:
             on_stream_end=on_stream_end,
             channel=msg.channel, chat_id=msg.chat_id,
             message_id=msg.metadata.get("message_id"),
+            session_key=key,
         )
 
         if final_content is None:
@@ -471,6 +482,17 @@ class AgentLoop:
         self._save_turn(session, all_msgs, 1 + len(history))
         self.sessions.save(session)
         self._schedule_background(self.memory_consolidator.maybe_consolidate_by_tokens(session))
+        self._schedule_background(self.vector_memory_manager.store_turn(
+            role="user",
+            content=msg.content,
+            metadata={"session_key": key},
+        ))
+        if final_content:
+            self._schedule_background(self.vector_memory_manager.store_turn(
+                role="assistant",
+                content=final_content,
+                metadata={"session_key": key},
+            ))
 
         if (mt := self.tools.get("message")) and isinstance(mt, MessageTool) and mt._sent_in_turn:
             return None
