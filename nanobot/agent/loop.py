@@ -20,6 +20,17 @@ from nanobot.agent.runner import AgentRunSpec, AgentRunner
 from nanobot.agent.subagent import SubagentManager
 from nanobot.agent.usage_hook import UsageLoggingHook
 from nanobot.agent.vector_memory import VectorMemoryManager
+
+
+class NoOpVectorMemoryManager:
+    async def inject_memory(self, messages, key):
+        return messages
+    async def store_turn(self, **kwargs):
+        pass
+    def store_turn_sync(self, **kwargs):
+        pass
+
+
 from nanobot.agent.tools.cron import CronTool
 from nanobot.agent.skills import BUILTIN_SKILLS_DIR
 from nanobot.agent.tools.filesystem import EditFileTool, ListDirTool, ReadFileTool, WriteFileTool
@@ -127,7 +138,7 @@ class AgentLoop:
             get_tool_definitions=self.tools.get_definitions,
             max_completion_tokens=provider.generation.max_tokens,
         )
-        self.vector_memory_manager = VectorMemoryManager()
+        self.vector_memory_manager = NoOpVectorMemoryManager()  # Disabled for experiment
         self._register_default_tools()
         self.commands = CommandRouter()
         register_builtin_commands(self.commands)

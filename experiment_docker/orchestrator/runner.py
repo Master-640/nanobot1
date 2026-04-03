@@ -38,10 +38,11 @@ class ExperimentOrchestrator:
         self.results_dir = self.base_dir / "results"
         self.raw_dir = self.results_dir / "raw"
         self.report_dir = self.results_dir / "report"
+        self.outputs_dir = self.results_dir / "outputs"  # 新增：任务产出目录
         self.shared_configs = self.base_dir / "shared" / "configs"
         self.shared_data = self.base_dir / "shared" / "data"
 
-        for d in [self.results_dir, self.raw_dir, self.report_dir]:
+        for d in [self.results_dir, self.raw_dir, self.report_dir, self.outputs_dir]:
             d.mkdir(parents=True, exist_ok=True)
 
         self._docker_client = None
@@ -296,12 +297,13 @@ class ExperimentOrchestrator:
         config: ExperimentConfig,
         timeout: int,
     ) -> ExperimentResult:
-        """本地模式：直接使用 Provider 调用 LLM API"""
+        """本地模式：直接使用 Provider 调用 LLM API（支持多轮对话）"""
         start_time = time.time()
         
         try:
             from nanobot.providers import set_current_session_config
             from nanobot.providers.openai_compat_provider import OpenAICompatProvider
+            from nanobot.agent.usage_logger import get_usage_log_path, configure_usage_logger
         except ImportError as e:
             return ExperimentResult(
                 session_key=config.session_key,
@@ -322,6 +324,9 @@ class ExperimentOrchestrator:
         log_path = self.raw_dir / config.session_key
         log_path.mkdir(parents=True, exist_ok=True)
 
+        # 配置 token usage 日志记录器
+        configure_usage_logger()
+        
         # 设置会话配置
         session_config = {
             "session_key": config.session_key,
@@ -335,36 +340,98 @@ class ExperimentOrchestrator:
         estimated_tokens = self._estimate_tokens(task_content)
         print(f"[{config.session_key}] 估算 tokens: {estimated_tokens}")
 
+        all_conversations = []  # 记录多轮对话
+        total_tokens_all_rounds = 0
+        prompt_tokens_all_rounds = 0
+        completion_tokens_all_rounds = 0
+        request_count_all = 0
+
         try:
             provider = OpenAICompatProvider()
+            
+            # 第一轮对话
             messages = [
                 {"role": "system", "content": "你是一个专业的数据分析助手。请用中文回答。"},
                 {"role": "user", "content": task_content}
             ]
             
-            response = await provider.chat(messages=messages, max_tokens=8000)
+            round_num = 0
+            conversation_history = []
             
-            # 从 response 中读取 token 使用
-            total_tokens = response.usage.get("total_tokens", 0) if response.usage else 0
-            prompt_tokens = response.usage.get("prompt_tokens", 0) if response.usage else 0
-            completion_tokens = response.usage.get("completion_tokens", 0) if response.usage else 0
-            request_count = 1
+            while True:
+                round_num += 1
+                print(f"[{config.session_key}] Round {round_num}...")
+                
+                response = await provider.chat(messages=messages, max_tokens=8000)
+                
+                # 记录 token 使用（累加）
+                total_tokens = response.usage.get("total_tokens", 0) if response.usage else 0
+                prompt_tokens = response.usage.get("prompt_tokens", 0) if response.usage else 0
+                completion_tokens = response.usage.get("completion_tokens", 0) if response.usage else 0
+                
+                total_tokens_all_rounds += total_tokens
+                prompt_tokens_all_rounds += prompt_tokens
+                completion_tokens_all_rounds += completion_tokens
+                request_count_all += 1
+                
+                # 记录对话内容
+                assistant_response = response.choices[0].message.content if response.choices else ""
+                conversation_history.append({
+                    "round": round_num,
+                    "user_message": messages[-1]["content"] if messages else "",
+                    "assistant_response": assistant_response,
+                    "tokens": total_tokens,
+                })
+                
+                # 检查是否需要继续对话（如果有工具调用或需要追问）
+                # 简单判断：如果响应中包含"让我"、"我需要"等词汇，可能需要继续
+                # 实际应该检查 response 中的 tool_calls，但当前简化处理
+                if round_num >= 3 or "让我" not in assistant_response[:200]:
+                    # 最多 3 轮，或者没有明显继续意图则退出
+                    break
+                
+                # 准备下一轮（如果有追问）
+                messages.append({"role": "assistant", "content": assistant_response})
+                messages.append({"role": "user", "content": "请继续分析，确保完整。"})
             
-            success = total_tokens > 0
-            print(f"[{config.session_key}] [OK] 成功 | Tokens: {total_tokens}")
+            # 最终输出
+            final_output = conversation_history[-1]["assistant_response"] if conversation_history else ""
+            
+            success = total_tokens_all_rounds > 0
+            print(f"[{config.session_key}] [OK] 成功 | 总 Tokens: {total_tokens_all_rounds} ({request_count_all} 轮)")
 
         except Exception as e:
             success = False
-            total_tokens = 0
-            prompt_tokens = 0
-            completion_tokens = 0
-            request_count = 0
+            total_tokens_all_rounds = 0
+            prompt_tokens_all_rounds = 0
+            completion_tokens_all_rounds = 0
+            request_count_all = 0
             print(f"[{config.session_key}] [ERROR] {e}")
+            
+            # 保存错误信息
+            error_file = log_path / "error.txt"
+            error_file.write_text(str(e), encoding="utf-8")
             
         finally:
             set_current_session_config(None)
 
         execution_time = time.time() - start_time
+        
+        # 保存对话历史到 log 目录
+        conversation_file = log_path / "conversation.json"
+        conversation_file.write_text(json.dumps({
+            "session_key": config.session_key,
+            "model": config.model,
+            "task_name": config.task_name,
+            "total_rounds": len(conversation_history),
+            "conversation": conversation_history,
+            "total_tokens": total_tokens_all_rounds,
+            "execution_time": execution_time,
+        }, indent=2, ensure_ascii=False))
+        
+        # 保存最终输出
+        output_file = log_path / "output.txt"
+        output_file.write_text(final_output, encoding="utf-8")
 
         return ExperimentResult(
             session_key=config.session_key,
@@ -373,10 +440,10 @@ class ExperimentOrchestrator:
             task_name=config.task_name,
             model=config.model,
             success=success,
-            total_tokens=total_tokens,
-            prompt_tokens=prompt_tokens,
-            completion_tokens=completion_tokens,
-            request_count=request_count,
+            total_tokens=total_tokens_all_rounds,
+            prompt_tokens=prompt_tokens_all_rounds,
+            completion_tokens=completion_tokens_all_rounds,
+            request_count=request_count_all,
             execution_time=execution_time,
             estimated_tokens=estimated_tokens,
         )
@@ -717,6 +784,96 @@ class ExperimentOrchestrator:
         
         return estimated
 
+    def save_task_outputs(self, results: list[ExperimentResult]) -> None:
+        """
+        保存任务产出到 outputs 目录
+        
+        目录结构：
+        outputs/
+        ├── Task1_Sales/
+        │   ├── deepseek_chat/
+        │   │   ├── output.json       # 总体统计
+        │   │   └── conversation.md   # 对话记录
+        │   ├── qwen3_max/
+        │   └── ...
+        └── ...
+        """
+        print(f"\n{'='*80}")
+        print("保存任务产出...")
+        print(f"{'='*80}\n")
+        
+        # 按任务分组
+        task_groups = {}
+        for result in results:
+            task_groups.setdefault(result.task_name, []).append(result)
+        
+        for task_name, task_results in task_groups.items():
+            task_output_dir = self.outputs_dir / task_name
+            task_output_dir.mkdir(parents=True, exist_ok=True)
+            
+            for result in task_results:
+                model_dir = task_output_dir / result.model.replace("-", "_").replace(".", "_")
+                model_dir.mkdir(parents=True, exist_ok=True)
+                
+                # 读取对话历史
+                conversation_file = self.raw_dir / result.session_key / "conversation.json"
+                conversation_data = {}
+                if conversation_file.exists():
+                    conversation_data = json.loads(conversation_file.read_text(encoding="utf-8"))
+                
+                # 读取最终输出
+                output_file = self.raw_dir / result.session_key / "output.txt"
+                final_output = ""
+                if output_file.exists():
+                    final_output = output_file.read_text(encoding="utf-8")
+                
+                # 保存总体统计 JSON
+                output_json = {
+                    "task_name": task_name,
+                    "model": result.model,
+                    "session_key": result.session_key,
+                    "success": result.success,
+                    "total_tokens": result.total_tokens,
+                    "prompt_tokens": result.prompt_tokens,
+                    "completion_tokens": result.completion_tokens,
+                    "request_count": result.request_count,
+                    "execution_time": result.execution_time,
+                    "estimated_tokens": result.estimated_tokens,
+                    "token_error_rate": abs(result.total_tokens - result.estimated_tokens) / result.estimated_tokens * 100 if result.estimated_tokens > 0 else 0,
+                    "total_rounds": conversation_data.get("total_rounds", 0),
+                    "timestamp": datetime.now().isoformat(),
+                }
+                
+                output_json_file = model_dir / "output.json"
+                output_json_file.write_text(json.dumps(output_json, indent=2, ensure_ascii=False))
+                
+                # 保存对话记录 Markdown
+                conversation_md = []
+                conversation_md.append(f"# {task_name} - {result.model} 对话记录\n")
+                conversation_md.append(f"**Session Key**: {result.session_key}\n")
+                conversation_md.append(f"**总 Token**: {result.total_tokens}\n")
+                conversation_md.append(f"**执行时间**: {result.execution_time:.2f}秒\n")
+                conversation_md.append(f"**对话轮数**: {conversation_data.get('total_rounds', 0)}\n")
+                conversation_md.append(f"**成功率**: {'✅ 成功' if result.success else '❌ 失败'}\n")
+                conversation_md.append("\n---\n")
+                
+                for conv_round in conversation_data.get("conversation", []):
+                    conversation_md.append(f"\n## Round {conv_round['round']}\n")
+                    conversation_md.append(f"**Token 使用**: {conv_round['tokens']}\n\n")
+                    conversation_md.append("### 用户输入\n")
+                    conversation_md.append(f"```\n{conv_round['user_message'][:500]}...\n```\n\n")
+                    conversation_md.append("### 模型回复\n")
+                    conversation_md.append(f"{conv_round['assistant_response']}\n\n")
+                    conversation_md.append("---\n")
+                
+                conversation_md_file = model_dir / "conversation.md"
+                conversation_md_file.write_text("\n".join(conversation_md), encoding="utf-8")
+                
+                print(f"✅ {task_name} / {result.model} → outputs/{task_name}/{model_dir.name}/")
+        
+        print(f"\n任务产出保存完成！\n")
+
+
     async def run_batch(
         self,
         configs: list[ExperimentConfig],
@@ -802,7 +959,7 @@ def generate_experiment_configs() -> list[ExperimentConfig]:
     # 定义 4 个 LLM Backend
     llm_backends = [
         ("deepseek-chat", "deepseek"),
-        ("qwen3-max", "dashscope"),
+        ("qwen3-max", "dashscope"),  # Qwen3 Max，官方支持
         ("kimi-k2.5", "moonshot"),
         ("MiniMax-M1", "minimax"),
     ]

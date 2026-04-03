@@ -1,0 +1,41 @@
+{
+  "deepseek_chat": {
+    "total_tasks": 4,
+    "successful_tasks": 4,
+    "total_runtime": 653.522543668747,
+    "total_tokens": 169903,
+    "total_prompt_tokens": 151212,
+    "total_completion_tokens": 18691,
+    "total_requests": 21,
+    "avg_cache_hit_rate": 0.9357473210372177,
+    "success_rate": 1.0,
+    "avg_runtime_per_task": 163.38063591718674,
+    "avg_tokens_per_task": 42475.75
+  },
+  "deepseek_reasoner": {
+    "total_tasks": 4,
+    "successful_tasks": 4,
+    "total_runtime": 665.3371021747589,
+    "total_tokens": 192866,
+    "total_prompt_tokens": 173635,
+    "total_completion_tokens": 19231,
+    "total_requests": 24,
+    "avg_cache_hit_rate": 0.8671932460728335,
+    "success_rate": 1.0,
+    "avg_runtime_per_task": 166.33427554368973,
+    "avg_tokens_per_task": 48216.5
+  },
+  "qwen3_max_2026_01_23": {
+    "total_tasks": 4,
+    "successful_tasks": 4,
+    "total_runtime": 279.43509459495544,
+    "total_tokens": 103283,
+    "total_prompt_tokens": 94740,
+    "total_completion_tokens": 8543,
+    "total_requests": 14,
+    "avg_cache_hit_rate": 0.0,
+    "success_rate": 1.0,
+    "avg_runtime_per_task": 69.85877364873886,
+    "avg_tokens_per_task": 25820.75
+  }
+}

@@ -1,0 +1,382 @@
+{
+  "Task1_Sales": {
+    "deepseek_chat": {
+      "status": {
+        "session_key": "test",
+        "model": "deepseek-chat",
+        "task_name": "Task1_Sales",
+        "success": true,
+        "reason": "completed",
+        "timestamp": "2026-04-02T21:16:57.803269+08:00",
+        "runtime_seconds": 178.4883840084076,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "request_count": 0
+      },
+      "tokens": {
+        "total_prompt_tokens": 26040,
+        "total_completion_tokens": 5357,
+        "total_tokens": 31397,
+        "request_count": 4,
+        "cache_hits": 24128,
+        "cache_misses": 1912,
+        "cache_hit_rate": 0.9265745007680491
+      },
+      "success": true,
+      "runtime_seconds": 178.4883840084076,
+      "total_tokens": 31397,
+      "prompt_tokens": 26040,
+      "completion_tokens": 5357,
+      "request_count": 4,
+      "cache_hit_rate": 0.9265745007680491
+    },
+    "deepseek_reasoner": {
+      "status": {
+        "session_key": "deepseek_reasoning_test",
+        "model": "deepseek-reasoner",
+        "task_name": "Task1_Sales",
+        "success": true,
+        "reason": "completed",
+        "timestamp": "2026-04-02T22:36:32.033545+08:00",
+        "runtime_seconds": 136.221914768219,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "request_count": 0
+      },
+      "tokens": {
+        "total_prompt_tokens": 24754,
+        "total_completion_tokens": 3979,
+        "total_tokens": 28733,
+        "request_count": 4,
+        "cache_hits": 20608,
+        "cache_misses": 4146,
+        "cache_hit_rate": 0.8325119172658965
+      },
+      "success": true,
+      "runtime_seconds": 136.221914768219,
+      "total_tokens": 28733,
+      "prompt_tokens": 24754,
+      "completion_tokens": 3979,
+      "request_count": 4,
+      "cache_hit_rate": 0.8325119172658965
+    },
+    "qwen3_max_2026_01_23": {
+      "status": {
+        "session_key": "nanobot_Task1_Sales_qwen3-max-2026-01-23",
+        "model": "qwen3-max-2026-01-23",
+        "task_name": "Task1_Sales",
+        "success": true,
+        "reason": "completed",
+        "timestamp": "2026-04-02T21:32:42.411136+08:00",
+        "runtime_seconds": 42.91701674461365,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "request_count": 0
+      },
+      "tokens": {
+        "total_prompt_tokens": 9761,
+        "total_completion_tokens": 1159,
+        "total_tokens": 10920,
+        "request_count": 2,
+        "cache_hits": 0,
+        "cache_misses": 0,
+        "cache_hit_rate": 0
+      },
+      "success": true,
+      "runtime_seconds": 42.91701674461365,
+      "total_tokens": 10920,
+      "prompt_tokens": 9761,
+      "completion_tokens": 1159,
+      "request_count": 2,
+      "cache_hit_rate": 0
+    }
+  },
+  "Task2_User": {
+    "deepseek_chat": {
+      "status": {
+        "session_key": "nanobot_Task2_User_deepseek-chat",
+        "model": "deepseek-chat",
+        "task_name": "Task2_User",
+        "success": true,
+        "reason": "completed",
+        "timestamp": "2026-04-02T21:34:15.923848+08:00",
+        "runtime_seconds": 132.5088758468628,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "request_count": 0
+      },
+      "tokens": {
+        "total_prompt_tokens": 24317,
+        "total_completion_tokens": 3723,
+        "total_tokens": 28040,
+        "request_count": 4,
+        "cache_hits": 22720,
+        "cache_misses": 1597,
+        "cache_hit_rate": 0.9343257803182958
+      },
+      "success": true,
+      "runtime_seconds": 132.5088758468628,
+      "total_tokens": 28040,
+      "prompt_tokens": 24317,
+      "completion_tokens": 3723,
+      "request_count": 4,
+      "cache_hit_rate": 0.9343257803182958
+    },
+    "deepseek_reasoner": {
+      "status": {
+        "session_key": "nanobot_Task2_User_deepseek-reasoner",
+        "model": "deepseek-reasoner",
+        "task_name": "Task2_User",
+        "success": true,
+        "reason": "completed",
+        "timestamp": "2026-04-02T22:43:25.090371+08:00",
+        "runtime_seconds": 112.17080497741699,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "request_count": 0
+      },
+      "tokens": {
+        "total_prompt_tokens": 29890,
+        "total_completion_tokens": 3122,
+        "total_tokens": 33012,
+        "request_count": 5,
+        "cache_hits": 27136,
+        "cache_misses": 2754,
+        "cache_hit_rate": 0.9078621612579458
+      },
+      "success": true,
+      "runtime_seconds": 112.17080497741699,
+      "total_tokens": 33012,
+      "prompt_tokens": 29890,
+      "completion_tokens": 3122,
+      "request_count": 5,
+      "cache_hit_rate": 0.9078621612579458
+    },
+    "qwen3_max_2026_01_23": {
+      "status": {
+        "session_key": "nanobot_Task2_User_qwen3-max-2026-01-23",
+        "model": "qwen3-max-2026-01-23",
+        "task_name": "Task2_User",
+        "success": true,
+        "reason": "completed",
+        "timestamp": "2026-04-02T21:32:52.952526+08:00",
+        "runtime_seconds": 48.27768135070801,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "request_count": 0
+      },
+      "tokens": {
+        "total_prompt_tokens": 9550,
+        "total_completion_tokens": 1341,
+        "total_tokens": 10891,
+        "request_count": 2,
+        "cache_hits": 0,
+        "cache_misses": 0,
+        "cache_hit_rate": 0
+      },
+      "success": true,
+      "runtime_seconds": 48.27768135070801,
+      "total_tokens": 10891,
+      "prompt_tokens": 9550,
+      "completion_tokens": 1341,
+      "request_count": 2,
+      "cache_hit_rate": 0
+    }
+  },
+  "Task3_Finance": {
+    "deepseek_chat": {
+      "status": {
+        "session_key": "nanobot_Task3_Finance_deepseek-chat",
+        "model": "deepseek-chat",
+        "task_name": "Task3_Finance",
+        "success": true,
+        "reason": "completed",
+        "timestamp": "2026-04-02T21:35:18.114154+08:00",
+        "runtime_seconds": 189.56617283821106,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "request_count": 0
+      },
+      "tokens": {
+        "total_prompt_tokens": 67396,
+        "total_completion_tokens": 5279,
+        "total_tokens": 72675,
+        "request_count": 8,
+        "cache_hits": 64064,
+        "cache_misses": 3332,
+        "cache_hit_rate": 0.9505608641462401
+      },
+      "success": true,
+      "runtime_seconds": 189.56617283821106,
+      "total_tokens": 72675,
+      "prompt_tokens": 67396,
+      "completion_tokens": 5279,
+      "request_count": 8,
+      "cache_hit_rate": 0.9505608641462401
+    },
+    "deepseek_reasoner": {
+      "status": {
+        "session_key": "nanobot_Task3_Finance_deepseek-reasoner",
+        "model": "deepseek-reasoner",
+        "task_name": "Task3_Finance",
+        "success": true,
+        "reason": "completed",
+        "timestamp": "2026-04-02T22:45:38.692943+08:00",
+        "runtime_seconds": 244.48565435409546,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "request_count": 0
+      },
+      "tokens": {
+        "total_prompt_tokens": 82011,
+        "total_completion_tokens": 7049,
+        "total_tokens": 89060,
+        "request_count": 10,
+        "cache_hits": 72768,
+        "cache_misses": 9243,
+        "cache_hit_rate": 0.8872956066869079
+      },
+      "success": true,
+      "runtime_seconds": 244.48565435409546,
+      "total_tokens": 89060,
+      "prompt_tokens": 82011,
+      "completion_tokens": 7049,
+      "request_count": 10,
+      "cache_hit_rate": 0.8872956066869079
+    },
+    "qwen3_max_2026_01_23": {
+      "status": {
+        "session_key": "nanobot_Task3_Finance_qwen3-max-2026-01-23",
+        "model": "qwen3-max-2026-01-23",
+        "task_name": "Task3_Finance",
+        "success": true,
+        "reason": "completed",
+        "timestamp": "2026-04-02T21:34:42.408128+08:00",
+        "runtime_seconds": 152.57631945610046,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "request_count": 0
+      },
+      "tokens": {
+        "total_prompt_tokens": 65677,
+        "total_completion_tokens": 5079,
+        "total_tokens": 70756,
+        "request_count": 8,
+        "cache_hits": 0,
+        "cache_misses": 0,
+        "cache_hit_rate": 0
+      },
+      "success": true,
+      "runtime_seconds": 152.57631945610046,
+      "total_tokens": 70756,
+      "prompt_tokens": 65677,
+      "completion_tokens": 5079,
+      "request_count": 8,
+      "cache_hit_rate": 0
+    }
+  },
+  "Task4_Review": {
+    "deepseek_chat": {
+      "status": {
+        "session_key": "nanobot_Task4_Review_deepseek-chat",
+        "model": "deepseek-chat",
+        "task_name": "Task4_Review",
+        "success": true,
+        "reason": "completed",
+        "timestamp": "2026-04-02T21:34:46.723872+08:00",
+        "runtime_seconds": 152.9591109752655,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "request_count": 0
+      },
+      "tokens": {
+        "total_prompt_tokens": 33459,
+        "total_completion_tokens": 4332,
+        "total_tokens": 37791,
+        "request_count": 5,
+        "cache_hits": 31168,
+        "cache_misses": 2291,
+        "cache_hit_rate": 0.9315281389162856
+      },
+      "success": true,
+      "runtime_seconds": 152.9591109752655,
+      "total_tokens": 37791,
+      "prompt_tokens": 33459,
+      "completion_tokens": 4332,
+      "request_count": 5,
+      "cache_hit_rate": 0.9315281389162856
+    },
+    "deepseek_reasoner": {
+      "status": {
+        "session_key": "nanobot_Task4_Review_deepseek-reasoner",
+        "model": "deepseek-reasoner",
+        "task_name": "Task4_Review",
+        "success": true,
+        "reason": "completed",
+        "timestamp": "2026-04-02T22:44:27.950177+08:00",
+        "runtime_seconds": 172.45872807502747,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "request_count": 0
+      },
+      "tokens": {
+        "total_prompt_tokens": 36980,
+        "total_completion_tokens": 5081,
+        "total_tokens": 42061,
+        "request_count": 5,
+        "cache_hits": 31104,
+        "cache_misses": 5876,
+        "cache_hit_rate": 0.8411032990805841
+      },
+      "success": true,
+      "runtime_seconds": 172.45872807502747,
+      "total_tokens": 42061,
+      "prompt_tokens": 36980,
+      "completion_tokens": 5081,
+      "request_count": 5,
+      "cache_hit_rate": 0.8411032990805841
+    },
+    "qwen3_max_2026_01_23": {
+      "status": {
+        "session_key": "nanobot_Task4_Review_qwen3-max-2026-01-23",
+        "model": "qwen3-max-2026-01-23",
+        "task_name": "Task4_Review",
+        "success": true,
+        "reason": "completed",
+        "timestamp": "2026-04-02T21:32:50.774236+08:00",
+        "runtime_seconds": 35.664077043533325,
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "request_count": 0
+      },
+      "tokens": {
+        "total_prompt_tokens": 9752,
+        "total_completion_tokens": 964,
+        "total_tokens": 10716,
+        "request_count": 2,
+        "cache_hits": 0,
+        "cache_misses": 0,
+        "cache_hit_rate": 0
+      },
+      "success": true,
+      "runtime_seconds": 35.664077043533325,
+      "total_tokens": 10716,
+      "prompt_tokens": 9752,
+      "completion_tokens": 964,
+      "request_count": 2,
+      "cache_hit_rate": 0
+    }
+  }
+}

@@ -55,7 +55,12 @@ def get_current_session_config() -> dict | None:
 def _write_usage_to_file(usage: dict[str, int]) -> None:
     """Write token usage to token_usage.txt file (per-session JSON format)."""
     try:
-        personal_dir = Path(__file__).parent.parent.parent / "personal"
+        import os
+        workspace_env = os.environ.get("NANOBOT_WORKSPACE")
+        if workspace_env:
+            personal_dir = Path(workspace_env) / "personal"
+        else:
+            personal_dir = Path(__file__).parent.parent.parent / "personal"
         personal_dir.mkdir(parents=True, exist_ok=True)
 
         session_key = get_current_session_key()
@@ -79,6 +84,37 @@ def _write_usage_to_file(usage: dict[str, int]) -> None:
         }
         with open(log_file, "a", encoding="utf-8") as f:
             f.write(json.dumps(record, ensure_ascii=False) + "\n")
+    except Exception:
+        pass
+
+
+def _write_api_response_to_file(response: Any) -> None:
+    """Write raw API response to a JSON file for debugging."""
+    try:
+        import os
+        workspace_env = os.environ.get("NANOBOT_WORKSPACE")
+        if workspace_env:
+            personal_dir = Path(workspace_env) / "personal"
+        else:
+            personal_dir = Path(__file__).parent.parent.parent / "personal"
+        personal_dir.mkdir(parents=True, exist_ok=True)
+
+        log_file = personal_dir / "api_responses.jsonl"
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        response_map = None
+        if hasattr(response, '__dict__'):
+            response_map = vars(response)
+        elif isinstance(response, dict):
+            response_map = response
+
+        if response_map:
+            record = {
+                "timestamp": timestamp,
+                "response": response_map
+            }
+            with open(log_file, "a", encoding="utf-8") as f:
+                f.write(json.dumps(record, ensure_ascii=False) + "\n")
     except Exception:
         pass
 
@@ -482,22 +518,24 @@ class OpenAICompatProvider(LLMProvider):
         usage_map = cls._maybe_mapping(usage_obj)
         if usage_map is not None:
             usage = {
-                "prompt_tokens": int(usage_map.get("prompt_tokens") or 0),
-                "completion_tokens": int(usage_map.get("completion_tokens") or 0),
-                "total_tokens": int(usage_map.get("total_tokens") or 0),
+                "prompt_tokens": int(usage_map.get("prompt_tokens") or -1),
+                "completion_tokens": int(usage_map.get("completion_tokens") or -1),
+                "total_tokens": int(usage_map.get("total_tokens") or -1),
             }
             _write_usage_to_file(usage)
+            _write_api_response_to_file(response)
             return usage
 
         if usage_obj:
             usage = {
-                "prompt_tokens": getattr(usage_obj, "prompt_tokens", 0) or 0,
-                "completion_tokens": getattr(usage_obj, "completion_tokens", 0) or 0,
-                "total_tokens": getattr(usage_obj, "total_tokens", 0) or 0,
+                "prompt_tokens": getattr(usage_obj, "prompt_tokens", -1) or -1,
+                "completion_tokens": getattr(usage_obj, "completion_tokens", -1) or -1,
+                "total_tokens": getattr(usage_obj, "total_tokens", -1) or -1,
             }
             _write_usage_to_file(usage)
+            _write_api_response_to_file(response)
             return usage
-        return {}
+        return {"prompt_tokens": -1, "completion_tokens": -1, "total_tokens": -1}
 
     def _parse(self, response: Any) -> LLMResponse:
         if isinstance(response, str):

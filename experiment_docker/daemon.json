@@ -1,8 +1,6 @@
 {
   "registry-mirrors": [
-    "https://docker.m.daocloud.io",
-    "https://docker.1panel.live",
-    "https://hub.rat.dev",
-    "https://dhub.kubesre.xyz"
+    "https://registry.cn-hangzhou.aliyuncs.com",
+    "https://docker.mirrors.ustc.edu.cn"
   ]
 }

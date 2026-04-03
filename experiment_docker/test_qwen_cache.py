@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+"""测试 Qwen3 Max 是否返回 prompt_token_details (cache hit/miss)"""
+
+import os
+import requests
+import json
+
+
+
+DASHSCOPE_KEY = "sk-91fe1c9c529b46bb88dc200a2e97b2b6"
+
+url = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {DASHSCOPE_KEY}"
+}
+
+data = {
+    "model": "qwen3-max-2026-01-23",
+    "messages": [{"role": "user", "content": "你好，请简单介绍一下自己"}]
+}
+
+print("=" * 60)
+print("测试 Qwen3 Max prompt_token_details")
+print("=" * 60)
+
+try:
+    resp = requests.post(
+        url,
+        headers=headers,
+        json=data,
+        timeout=30,
+        proxies={"http": None, "https": None}
+    )
+    print(f"Status: {resp.status_code}")
+    print(f"Response: {json.dumps(resp.json(), indent=2, ensure_ascii=False)}")
+
+    result = resp.json()
+    if "usage" in result:
+        usage = result["usage"]
+        print("\n--- Usage Details ---")
+        print(f"prompt_tokens: {usage.get('prompt_tokens')}")
+        print(f"completion_tokens: {usage.get('completion_tokens')}")
+        print(f"total_tokens: {usage.get('total_tokens')}")
+        print(f"prompt_tokens_details: {usage.get('prompt_tokens_details')}")
+        if usage.get('prompt_tokens_details'):
+            print(f"  - cached_tokens: {usage['prompt_tokens_details'].get('cached_tokens')}")
+except Exception as e:
+    print(f"❌ 请求失败: {e}")

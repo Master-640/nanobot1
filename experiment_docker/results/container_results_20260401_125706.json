@@ -1,0 +1,137 @@
+{
+  "timestamp": "2026-04-01T12:57:06.781364",
+  "total": 16,
+  "successful": 0,
+  "results": [
+    {
+      "session_key": "Task1_Sales_deepseek_chat",
+      "task_name": "Task1_Sales",
+      "model": "deepseek-chat",
+      "success": false,
+      "execution_time": 603.3639442920685,
+      "exit_code": 1
+    },
+    {
+      "session_key": "Task1_Sales_qwen3_max",
+      "task_name": "Task1_Sales",
+      "model": "qwen3-max",
+      "success": false,
+      "execution_time": 603.9093177318573,
+      "exit_code": 1
+    },
+    {
+      "session_key": "Task2_User_qwen3_max",
+      "task_name": "Task2_User",
+      "model": "qwen3-max",
+      "success": false,
+      "execution_time": 11379.224610805511,
+      "exit_code": 1
+    },
+    {
+      "session_key": "Task2_User_deepseek_chat",
+      "task_name": "Task2_User",
+      "model": "deepseek-chat",
+      "success": false,
+      "execution_time": 11380.096093654633,
+      "exit_code": 1
+    },
+    {
+      "session_key": "Task2_User_kimi_k2.5",
+      "task_name": "Task2_User",
+      "model": "kimi-k2.5",
+      "success": false,
+      "execution_time": 18978.008568525314,
+      "exit_code": 1
+    },
+    {
+      "session_key": "Task2_User_MiniMax_M1",
+      "task_name": "Task2_User",
+      "model": "MiniMax-M1",
+      "success": false,
+      "execution_time": 18977.759736299515,
+      "exit_code": 1
+    },
+    {
+      "session_key": "Task3_Finance_qwen3_max",
+      "task_name": "Task3_Finance",
+      "model": "qwen3-max",
+      "success": false,
+      "execution_time": 18996.66852092743,
+      "exit_code": 1
+    },
+    {
+      "session_key": "Task3_Finance_deepseek_chat",
+      "task_name": "Task3_Finance",
+      "model": "deepseek-chat",
+      "success": false,
+      "execution_time": 18996.805631160736,
+      "exit_code": 1
+    },
+    {
+      "session_key": "Task1_Sales_MiniMax_M1",
+      "task_name": "Task1_Sales",
+      "model": "MiniMax-M1",
+      "success": false,
+      "execution_time": 1800,
+      "exit_code": -1,
+      "error": "timeout"
+    },
+    {
+      "session_key": "Task1_Sales_kimi_k2.5",
+      "task_name": "Task1_Sales",
+      "model": "kimi-k2.5",
+      "success": false,
+      "execution_time": 1800,
+      "exit_code": -1,
+      "error": "timeout"
+    },
+    {
+      "session_key": "Task3_Finance_MiniMax_M1",
+      "task_name": "Task3_Finance",
+      "model": "MiniMax-M1",
+      "success": false,
+      "execution_time": 602.7974798679352,
+      "exit_code": 1
+    },
+    {
+      "session_key": "Task3_Finance_kimi_k2.5",
+      "task_name": "Task3_Finance",
+      "model": "kimi-k2.5",
+      "success": false,
+      "execution_time": 602.9422614574432,
+      "exit_code": 1
+    },
+    {
+      "session_key": "Task4_Review_deepseek_chat",
+      "task_name": "Task4_Review",
+      "model": "deepseek-chat",
+      "success": false,
+      "execution_time": 602.6420133113861,
+      "exit_code": 1
+    },
+    {
+      "session_key": "Task4_Review_qwen3_max",
+      "task_name": "Task4_Review",
+      "model": "qwen3-max",
+      "success": false,
+      "execution_time": 603.3761992454529,
+      "exit_code": 1
+    },
+    {
+      "session_key": "Task4_Review_kimi_k2.5",
+      "task_name": "Task4_Review",
+      "model": "kimi-k2.5",
+      "success": false,
+      "execution_time": 602.2070691585541,
+      "exit_code": 1
+    },
+    {
+      "session_key": "Task4_Review_MiniMax_M1",
+      "task_name": "Task4_Review",
+      "model": "MiniMax-M1",
+      "success": false,
+      "execution_time": 602.241575717926,
+      "exit_code": 1
+    }
+  ]
+}

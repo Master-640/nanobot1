@@ -20,14 +20,10 @@ build
 *.swp
 *.swo
 
-# Experiment outputs
+# Experiment outputs (but not the source code)
 experiment_docker/results/
 experiment_docker/personal/
-
-# Docker files
-experiment_docker/Dockerfile
-experiment_docker/.dockerignore
-experiment_docker/daemon.json
+experiment_docker/outputs/
 
 # Skills (not needed in container)
 .trae/skills

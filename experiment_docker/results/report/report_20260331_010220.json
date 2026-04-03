@@ -1,0 +1,176 @@
+{
+  "report_date": "2026-03-31T01:02:20.873097",
+  "total_experiments": 16,
+  "successful": 12,
+  "success_rate": 0.75,
+  "llm_backends": {
+    "deepseek-chat": {
+      "model": "deepseek-chat",
+      "count": 4,
+      "success_rate": 1.0,
+      "avg_total_tokens": 1941.25,
+      "min_total_tokens": 1650,
+      "max_total_tokens": 2529,
+      "std_total_tokens": 397.8319368778731,
+      "avg_estimated_tokens": 747.0,
+      "avg_token_error_rate": 169.8266527126446,
+      "avg_execution_time": 50.79533565044403,
+      "tasks": {
+        "Task1_Sales": {
+          "count": 1,
+          "success": 1,
+          "avg_total_tokens": 1776.0,
+          "avg_estimated_tokens": 732.0,
+          "avg_execution_time": 36.80388355255127
+        },
+        "Task2_User": {
+          "count": 1,
+          "success": 1,
+          "avg_total_tokens": 1810.0,
+          "avg_estimated_tokens": 623.0,
+          "avg_execution_time": 61.847397804260254
+        },
+        "Task3_Finance": {
+          "count": 1,
+          "success": 1,
+          "avg_total_tokens": 2529.0,
+          "avg_estimated_tokens": 677.0,
+          "avg_execution_time": 75.11570644378662
+        },
+        "Task4_Review": {
+          "count": 1,
+          "success": 1,
+          "avg_total_tokens": 1650.0,
+          "avg_estimated_tokens": 956.0,
+          "avg_execution_time": 29.41435480117798
+        }
+      }
+    },
+    "qwen3-max": {
+      "model": "qwen3-max",
+      "count": 4,
+      "success_rate": 0.0,
+      "avg_total_tokens": 0.0,
+      "min_total_tokens": 0,
+      "max_total_tokens": 0,
+      "std_total_tokens": 0.0,
+      "avg_estimated_tokens": 747.0,
+      "avg_token_error_rate": 0,
+      "avg_execution_time": 0.8337189555168152,
+      "tasks": {
+        "Task1_Sales": {
+          "count": 1,
+          "success": 0,
+          "avg_total_tokens": 0.0,
+          "avg_estimated_tokens": 732.0,
+          "avg_execution_time": 0.8929214477539062
+        },
+        "Task2_User": {
+          "count": 1,
+          "success": 0,
+          "avg_total_tokens": 0.0,
+          "avg_estimated_tokens": 623.0,
+          "avg_execution_time": 0.8264496326446533
+        },
+        "Task3_Finance": {
+          "count": 1,
+          "success": 0,
+          "avg_total_tokens": 0.0,
+          "avg_estimated_tokens": 677.0,
+          "avg_execution_time": 0.7799429893493652
+        },
+        "Task4_Review": {
+          "count": 1,
+          "success": 0,
+          "avg_total_tokens": 0.0,
+          "avg_estimated_tokens": 956.0,
+          "avg_execution_time": 0.8355617523193359
+        }
+      }
+    },
+    "kimi-k2.5": {
+      "model": "kimi-k2.5",
+      "count": 4,
+      "success_rate": 1.0,
+      "avg_total_tokens": 1957.25,
+      "min_total_tokens": 1455,
+      "max_total_tokens": 2302,
+      "std_total_tokens": 365.5173274506513,
+      "avg_estimated_tokens": 747.0,
+      "avg_token_error_rate": 173.85313787325111,
+      "avg_execution_time": 29.503570199012756,
+      "tasks": {
+        "Task1_Sales": {
+          "count": 1,
+          "success": 1,
+          "avg_total_tokens": 2302.0,
+          "avg_estimated_tokens": 732.0,
+          "avg_execution_time": 45.60548186302185
+        },
+        "Task2_User": {
+          "count": 1,
+          "success": 1,
+          "avg_total_tokens": 2129.0,
+          "avg_estimated_tokens": 623.0,
+          "avg_execution_time": 34.85987567901611
+        },
+        "Task3_Finance": {
+          "count": 1,
+          "success": 1,
+          "avg_total_tokens": 1943.0,
+          "avg_estimated_tokens": 677.0,
+          "avg_execution_time": 21.762271404266357
+        },
+        "Task4_Review": {
+          "count": 1,
+          "success": 1,
+          "avg_total_tokens": 1455.0,
+          "avg_estimated_tokens": 956.0,
+          "avg_execution_time": 15.786651849746704
+        }
+      }
+    },
+    "MiniMax-M1": {
+      "model": "MiniMax-M1",
+      "count": 4,
+      "success_rate": 1.0,
+      "avg_total_tokens": 2050.25,
+      "min_total_tokens": 1643,
+      "max_total_tokens": 2455,
+      "std_total_tokens": 338.6043659887844,
+      "avg_estimated_tokens": 747.0,
+      "avg_token_error_rate": 180.97739499331442,
+      "avg_execution_time": 53.39659363031387,
+      "tasks": {
+        "Task1_Sales": {
+          "count": 1,
+          "success": 1,
+          "avg_total_tokens": 2136.0,
+          "avg_estimated_tokens": 732.0,
+          "avg_execution_time": 67.94538998603821
+        },
+        "Task2_User": {
+          "count": 1,
+          "success": 1,
+          "avg_total_tokens": 1643.0,
+          "avg_estimated_tokens": 623.0,
+          "avg_execution_time": 57.341092348098755
+        },
+        "Task3_Finance": {
+          "count": 1,
+          "success": 1,
+          "avg_total_tokens": 2455.0,
+          "avg_estimated_tokens": 677.0,
+          "avg_execution_time": 50.45203399658203
+        },
+        "Task4_Review": {
+          "count": 1,
+          "success": 1,
+          "avg_total_tokens": 1967.0,
+          "avg_estimated_tokens": 956.0,
+          "avg_execution_time": 37.8478581905365
+        }
+      }
+    }
+  }
+}
