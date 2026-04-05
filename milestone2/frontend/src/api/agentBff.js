@@ -28,6 +28,8 @@ export const forkConversation = (conversationId, data) =>
 export const mergeConversation = (data) =>
   request.post('/merge', data)
 
+export const getConversationsStatus = () => request.get('/conversations/status')
+
 export const deleteConversation = (id) =>
   request.delete(`/conversations/${id}`)
 

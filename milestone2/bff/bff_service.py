@@ -84,7 +84,7 @@ class MessageResponse(BaseModel):
     conversation_id: str
     content: str
     usage: dict
-    trajectory: list
+    trajectory: Optional[list] = None  # 添加轨迹数据字段
 
 
 class ForkRequest(BaseModel):
@@ -319,6 +319,73 @@ async def health_check():
         "total_conversations": len(conversations),
         "total_branches": len(branches),
     }
+
+
+@app.get("/conversations/status")
+async def get_conversations_status():
+    """获取所有对话的真实状态（包括容器状态）"""
+    status_list = []
+    for conv_id, conv in conversations.items():
+        try:
+            container_name = f"nanobot_conv_{conv_id}"
+            container = orchestrator.docker_client.containers.get(container_name)
+            status_list.append({
+                "conversation_id": conv_id,
+                "status": container.status,
+                "healthy": container.status == "running",
+                "title": conv["title"],
+                "model": conv["model"],
+                "parent_id": conv.get("parent_id"),
+                "created_at": conv.get("created_at")
+            })
+        except Exception:
+            status_list.append({
+                "conversation_id": conv_id,
+                "status": "not_found",
+                "healthy": False,
+                "title": conv["title"],
+                "model": conv["model"],
+                "parent_id": conv.get("parent_id"),
+                "created_at": conv.get("created_at")
+            })
+    
+    return {"conversations": status_list}
+
+
+@app.on_event("startup")
+async def startup():
+    """启动时清理无效对话"""
+    print("[BFF] 启动时清理无效对话...")
+    
+    # 获取所有对话ID的副本，避免在迭代时修改字典
+    conv_ids = list(conversations.keys())
+    
+    for conv_id in conv_ids:
+        try:
+            # 检查容器是否存在且健康
+            container_name = f"nanobot_conv_{conv_id}"
+            container = orchestrator.docker_client.containers.get(container_name)
+            
+            if container.status != "running":
+                print(f"[BFF] 删除无效对话 {conv_id}，容器状态: {container.status}")
+                # 删除无效对话
+                if conv_id in conversations:
+                    del conversations[conv_id]
+                if conv_id in container_ports:
+                    del container_ports[conv_id]
+                if conv_id in branches:
+                    del branches[conv_id]
+        except Exception as e:
+            print(f"[BFF] 删除无效对话 {conv_id}，容器不存在: {e}")
+            # 容器不存在，删除对话
+            if conv_id in conversations:
+                del conversations[conv_id]
+            if conv_id in container_ports:
+                del container_ports[conv_id]
+            if conv_id in branches:
+                del branches[conv_id]
+    
+    print(f"[BFF] 清理完成，剩余对话: {len(conversations)}")
 
 
 if __name__ == "__main__":

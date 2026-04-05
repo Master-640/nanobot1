@@ -109,18 +109,39 @@ class ContainerOrchestrator:
 
         return container_info
 
-    async def _wait_until_ready(self, container: Container, timeout: int = 60):
-        """Wait until container is running and ready."""
+    async def _wait_until_ready(self, container: Container, timeout: int = 60) -> None:
+        """等待容器内部服务完全启动"""
+        import httpx
         start_time = datetime.now()
+        
         while (datetime.now() - start_time).seconds < timeout:
             try:
                 container.reload()
+                
+                # 检查容器状态
                 if container.status == "running":
-                    await asyncio.sleep(2)
-                    return
-                await asyncio.sleep(1)
+                    # 获取容器映射的端口
+                    ports = container.attrs.get("NetworkSettings", {}).get("Ports", {})
+                    port_8080 = ports.get("8080/tcp", [{}])[0]
+                    mapped_port = port_8080.get("HostPort") if port_8080 else None
+                    
+                    if mapped_port:
+                        # 尝试连接容器内部的健康检查接口
+                        health_url = f"http://localhost:{mapped_port}/health"
+                        async with httpx.AsyncClient(timeout=5.0) as client:
+                            try:
+                                resp = await client.get(health_url)
+                                if resp.status_code == 200:
+                                    print(f"[Orchestrator] Container {container.name} is ready")
+                                    return
+                            except Exception:
+                                # 健康检查失败，继续等待
+                                pass
+                
+                await asyncio.sleep(2)
             except Exception:
-                await asyncio.sleep(1)
+                await asyncio.sleep(2)
+        
         raise TimeoutError(f"Container {container.name} failed to become ready")
 
     def _get_container_info(self, container: Container) -> dict:
@@ -169,6 +190,11 @@ class ContainerOrchestrator:
                     model_val = env[6:]
                 elif env.startswith("API_KEY="):
                     api_key_val = env[9:]
+
+            # 如果从父容器获取的API密钥为空，使用全局配置
+            if not api_key_val:
+                from shared.config import DEEPSEEK_API_KEY
+                api_key_val = DEEPSEEK_API_KEY
 
             parent_volume = self.docker_client.volumes.get(parent_volume_name)
             parent_path = f"/var/lib/docker/volumes/{parent_volume_name}/_data"

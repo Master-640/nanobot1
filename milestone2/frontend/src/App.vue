@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen flex flex-col bg-gray-50">
     <!-- 顶部导航栏（现代化） -->
-    <div class="bg-red-500 border-b border-gray-200 px-6 py-3 flex justify-between items-center shadow-sm">
+    <div class="bg-white border-b border-gray-200 px-6 py-3 flex justify-between items-center shadow-sm">
       <div class="flex items-center gap-4">
         <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
           <span class="text-white text-lg">🐈</span>
@@ -27,7 +27,7 @@
 
     <!-- 主体：三栏布局 -->
     <div class="flex-1 flex overflow-hidden p-4 gap-4">
-      <!-- 左侧：对话列表（新风格） -->
+      <!-- 左侧：对话列表 -->
       <div class="w-96 bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden">
         <div class="px-5 py-3 bg-white border-b border-gray-100 flex justify-between items-center">
           <div class="flex items-center gap-2">
@@ -43,6 +43,9 @@
             </el-button>
             <el-button v-if="currentConvId" type="warning" size="small" @click="showMergeDialog = true" :disabled="convList.length < 2" circle plain>
               <el-icon><Switch /></el-icon>
+            </el-button>
+            <el-button v-if="currentConvId" type="danger" size="small" @click="handleDelete" :loading="loading" circle plain>
+              <el-icon><Delete /></el-icon>
             </el-button>
           </div>
         </div>
@@ -72,6 +75,7 @@
               </div>
 
               <div v-show="expandedIdx === idx" class="px-4 pb-4 space-y-3 border-t border-gray-100 pt-3">
+                <!-- 用户消息 -->
                 <div>
                   <div class="text-xs font-semibold text-gray-400 mb-1 flex items-center gap-1">
                     <el-icon><User /></el-icon> 用户消息
@@ -81,28 +85,72 @@
                   </div>
                 </div>
 
+                <!-- Agent 回复（支持 Markdown 渲染） -->
                 <div>
                   <div class="text-xs font-semibold text-gray-400 mb-1 flex items-center gap-1">
                     <el-icon><ChatDotSquare /></el-icon> Agent 回复
                   </div>
-                  <div class="bg-white p-3 rounded-xl border border-gray-200 text-sm text-gray-700">
-                    {{ item.assistant || '...' }}
+                  <div class="bg-white p-3 rounded-xl border border-gray-200 text-sm text-gray-700 markdown-body" v-html="renderMarkdown(item.assistant || '...')">
                   </div>
                 </div>
 
+                <!-- 轨迹卡片网格（el-tree 方案 + 原始 JSON 原文） -->
                 <div class="trajectory-grid mt-2">
+                  <!-- State 卡片 -->
                   <div class="trajectory-card card-state">
                     <div class="card-header"><el-icon><Document /></el-icon> STATE (s_t)</div>
-                    <div class="card-content"><div class="json-view">{{ formatJSON(item.s || {}) }}</div></div>
+                    <div class="card-content">
+                      <el-tree
+                        :data="objectToTreeData(item.s || {})"
+                        :props="{ label: 'label', children: 'children' }"
+                        default-expand-all
+                        indent="16"
+                        class="json-tree"
+                      />
+                      <div class="json-raw">
+                        <div class="json-raw-header">原始 JSON：</div>
+                        <pre class="json-raw-content">{{ formatJSON(item.s) }}</pre>
+                      </div>
+                    </div>
                   </div>
+
+                  <!-- Action 卡片 -->
                   <div class="trajectory-card card-action">
                     <div class="card-header"><el-icon><Promotion /></el-icon> ACTION (a_t)</div>
-                    <div class="card-content"><div class="json-view">{{ formatJSON(item.a || {}) }}</div></div>
+                    <div class="card-content">
+                      <el-tree
+                        :data="objectToTreeData(item.a || {})"
+                        :props="{ label: 'label', children: 'children' }"
+                        default-expand-all
+                        indent="16"
+                        class="json-tree"
+                      />
+                      <div class="json-raw">
+                        <div class="json-raw-header">原始 JSON：</div>
+                        <pre class="json-raw-content">{{ formatJSON(item.a) }}</pre>
+                      </div>
+                    </div>
                   </div>
+
+                  <!-- Observation 卡片 -->
                   <div class="trajectory-card card-obs">
                     <div class="card-header"><el-icon><ChatDotRound /></el-icon> OBSERVATION (o_t)</div>
-                    <div class="card-content"><div class="json-view">{{ formatJSON(item.o || {}) }}</div></div>
+                    <div class="card-content">
+                      <el-tree
+                        :data="objectToTreeData(item.o || {})"
+                        :props="{ label: 'label', children: 'children' }"
+                        default-expand-all
+                        indent="16"
+                        class="json-tree"
+                      />
+                      <div class="json-raw">
+                        <div class="json-raw-header">原始 JSON：</div>
+                        <pre class="json-raw-content">{{ formatJSON(item.o) }}</pre>
+                      </div>
+                    </div>
                   </div>
+
+                  <!-- Reward 卡片 -->
                   <div class="trajectory-card card-reward">
                     <div class="card-header"><el-icon><Star /></el-icon> REWARD (r_t)</div>
                     <div class="card-content flex justify-center items-center">
@@ -124,14 +172,19 @@
         </div>
       </div>
 
-      <!-- 中间：图区域（DAG）新风格 -->
+      <!-- 中间：图区域（DAG，支持拖拽缩放） -->
       <div class="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden">
         <div class="px-5 py-3 bg-white border-b border-gray-100 flex justify-between items-center">
           <div class="flex items-center gap-2">
             <el-icon class="text-gray-500 text-lg"><Connection /></el-icon>
             <span class="font-medium text-gray-700">分支图</span>
           </div>
-          <el-tag size="small" type="primary" effect="plain" round>{{ convList.length }} 个分支</el-tag>
+          <div class="flex items-center gap-2">
+            <el-tag size="small" type="primary" effect="plain" round>{{ convList.length }} 个分支</el-tag>
+            <el-button type="primary" size="small" @click="resetGraphView" :loading="loading" circle plain>
+              <el-icon><Refresh /></el-icon>
+            </el-button>
+          </div>
         </div>
         <div class="flex-1 bg-gray-50 relative" ref="graphContainer">
           <div v-if="convList.length === 0" class="absolute inset-0 flex items-center justify-center text-gray-400">
@@ -198,27 +251,38 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { 
-  Connection, Plus, Folder, Share, Switch, 
+  Connection, User, Plus, Folder, Share, Switch, Delete, 
   ChatDotRound, ChatLineSquare, Document, CaretRight,
-  ChatDotSquare, Promotion, Files, Star, User
+  ChatDotSquare, Promotion, Files, Star, Refresh
 } from '@element-plus/icons-vue'
 import { storeToRefs } from 'pinia'
 import { useConvStore } from './stores/conversation'
-import {
-  healthCheck,
-  listConversations,
-  createConversation,
-  sendMessage,
-  getTrajectory,
-  getHistory,
-  forkConversation,
-  mergeConversation,
-  deleteConversation
+import { 
+  healthCheck, listConversations, createConversation, sendMessage, 
+  getTrajectory, getHistory, forkConversation, mergeConversation, 
+  deleteConversation, getConversationsStatus
 } from './api/agentBff'
 import * as d3 from 'd3'
+import { marked } from 'marked'
+import DOMPurify from 'dompurify'
+
+// 配置 marked（可选）
+marked.setOptions({
+  breaks: true,        // 支持 GFM 换行
+  gfm: true,           // 支持 GitHub Flavored Markdown
+  headerIds: false,    // 避免生成多余的 id
+  mangle: false
+})
+
+// 渲染 Markdown 并净化 HTML
+function renderMarkdown(text) {
+  if (!text) return ''
+  const rawHtml = marked.parse(text, { async: false })
+  return DOMPurify.sanitize(rawHtml)
+}
 
 const store = useConvStore()
 const { activeCount, currentConvId, convList, chatList } = storeToRefs(store)
@@ -232,6 +296,9 @@ const expandedIdx = ref(-1)
 const graphContainer = ref(null)
 const svgCanvas = ref(null)
 
+// 存储 d3 的 zoom 行为对象，以便重置视图
+let currentZoom = null
+
 const currentBranchName = computed(() => {
   const conv = convList.value.find(c => c.conversation_id === currentConvId.value)
   return conv?.title || 'main'
@@ -240,6 +307,35 @@ const currentBranchName = computed(() => {
 const availableMergeTargets = computed(() => {
   return convList.value.filter(c => c.conversation_id !== currentConvId.value)
 })
+
+// 将对象转换为 el-tree 的 data 格式
+function objectToTreeData(obj) {
+  if (obj === null || obj === undefined) return []
+  if (typeof obj !== 'object') {
+    return [{ label: String(obj) }]
+  }
+  return Object.keys(obj).map(key => {
+    const value = obj[key]
+    let children = []
+    if (typeof value === 'object' && value !== null) {
+      children = objectToTreeData(value)
+    } else {
+      children = [{ label: String(value) }]
+    }
+    return {
+      label: key,
+      children: children
+    }
+  })
+}
+
+function formatJSON(obj) {
+  try {
+    return JSON.stringify(obj, null, 2)
+  } catch {
+    return String(obj)
+  }
+}
 
 onMounted(async () => {
   await checkHealth()
@@ -263,16 +359,50 @@ async function checkHealth() {
 
 async function loadConversations() {
   try {
-    const res = await listConversations()
-    const list = res.data?.conversations || []
-    store.setConvList(list)
-    store.setActiveCount(list.length)
-    if (list.length > 0 && !currentConvId.value) {
-      handleSwitchConv(list[0])
+    // 使用状态同步接口获取真实对话状态
+    const statusRes = await getConversationsStatus()
+    const statusList = statusRes.data?.conversations || []
+    
+    // 过滤出健康的对话
+    const healthyConversations = statusList
+      .filter(conv => conv.healthy)
+      .map(conv => ({
+        conversation_id: conv.conversation_id,
+        title: conv.title,
+        model: conv.model,
+        parent_id: conv.parent_id,
+        created_at: conv.created_at
+      }))
+    
+    // 如果有无效对话被清理，显示提示
+    const invalidCount = statusList.length - healthyConversations.length
+    if (invalidCount > 0) {
+      console.log(`清理了 ${invalidCount} 个无效对话`)
     }
+    
+    store.setConvList(healthyConversations)
+    store.setActiveCount(healthyConversations.length)
+    
+    if (healthyConversations.length > 0 && !currentConvId.value) {
+      handleSwitchConv(healthyConversations[0])
+    }
+    
     drawGraph()
   } catch (e) {
     console.error('加载对话失败:', e)
+    // 如果状态接口失败，回退到普通接口
+    try {
+      const res = await listConversations()
+      const list = res.data?.conversations || []
+      store.setConvList(list)
+      store.setActiveCount(list.length)
+      if (list.length > 0 && !currentConvId.value) {
+        handleSwitchConv(list[0])
+      }
+      drawGraph()
+    } catch (fallbackError) {
+      console.error('回退加载也失败:', fallbackError)
+    }
   }
 }
 
@@ -280,11 +410,13 @@ function toggleExpand(idx) {
   expandedIdx.value = expandedIdx.value === idx ? -1 : idx
 }
 
-function formatJSON(obj) {
-  try {
-    return JSON.stringify(obj, null, 2)
-  } catch {
-    return String(obj)
+// 重置图形视图（缩放和平移）
+function resetGraphView() {
+  if (svgCanvas.value && currentZoom) {
+    const svg = d3.select(svgCanvas.value)
+    svg.transition().duration(500).call(currentZoom.transform, d3.zoomIdentity)
+  } else {
+    drawGraph() // 后备：重绘
   }
 }
 
@@ -301,12 +433,14 @@ async function handleCreateConv() {
       model: 'deepseek-chat'
     })
     const conv = res.data
+    conv.parent_id = null
     store.addConv(conv)
     store.setActiveCount(convList.value.length)
     store.setCurrentConv(conv.conversation_id)
     store.setChatList([])
     expandedIdx.value = -1
     ElMessage.success('创建成功')
+    await nextTick()
     drawGraph()
   } catch (e) {
     ElMessage.error('创建失败')
@@ -322,47 +456,71 @@ async function handleSwitchConv(conv) {
   await loadHistory(conv.conversation_id)
 }
 
-async function loadTrajectory(convId) {
-  try {
-    const res = await getTrajectory(convId)
-    store.setTrajectory(res.data?.trajectory || [])
-  } catch (e) {
-    console.error('加载轨迹失败:', e)
+// 带重试的轨迹加载（避免新容器尚未就绪）
+async function loadTrajectoryWithRetry(convId, retries = 3, delay = 1000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await getTrajectory(convId)
+      store.setTrajectory(res.data?.trajectory || [])
+      return true
+    } catch (e) {
+      if (i === retries - 1) {
+        console.error(`加载轨迹失败 (convId=${convId}):`, e)
+        ElMessage.warning(`对话 ${convId} 的轨迹暂不可用，请稍后刷新`)
+        store.setTrajectory([])
+        return false
+      }
+      await new Promise(resolve => setTimeout(resolve, delay))
+    }
   }
 }
 
-async function loadHistory(convId) {
-  try {
-    const [historyRes, trajectoryRes] = await Promise.all([
-      getHistory(convId),
-      getTrajectory(convId)
-    ])
-    
-    const history = historyRes.data?.history || []
-    const trajectory = trajectoryRes.data?.trajectory || []
-    
-    const formatted = []
-    for (let i = 0; i < history.length; i += 2) {
-      const userMsg = history[i]
-      const assistantMsg = history[i + 1]
-      const trajIndex = Math.floor(i / 2)
-      const trajRecord = trajectory[trajIndex] || {}
-      
-      if (userMsg) {
-        formatted.push({
-          user: userMsg.content,
-          assistant: assistantMsg?.content || '...',
-          s: trajRecord.s_t || {},
-          a: trajRecord.a_t || {},
-          o: trajRecord.o_t || {},
-          r: trajRecord.r_t || 0
-        })
+async function loadHistoryWithRetry(convId, retries = 3, delay = 1000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const [historyRes, trajectoryRes] = await Promise.all([
+        getHistory(convId),
+        getTrajectory(convId)
+      ])
+      const history = historyRes.data?.history || []
+      const trajectory = trajectoryRes.data?.trajectory || []
+      const formatted = []
+      for (let j = 0; j < history.length; j += 2) {
+        const userMsg = history[j]
+        const assistantMsg = history[j + 1]
+        const trajIndex = Math.floor(j / 2)
+        const trajRecord = trajectory[trajIndex] || {}
+        if (userMsg) {
+          formatted.push({
+            user: userMsg.content,
+            assistant: assistantMsg?.content || '...',
+            s: trajRecord.s_t || {},
+            a: trajRecord.a_t || {},
+            o: trajRecord.o_t || {},
+            r: trajRecord.r_t || 0
+          })
+        }
       }
+      store.setChatList(formatted)
+      return true
+    } catch (e) {
+      if (i === retries - 1) {
+        console.error(`加载历史失败 (convId=${convId}):`, e)
+        ElMessage.warning(`对话 ${convId} 的历史暂不可用，请稍后刷新`)
+        store.setChatList([])
+        return false
+      }
+      await new Promise(resolve => setTimeout(resolve, delay))
     }
-    store.setChatList(formatted)
-  } catch (e) {
-    console.error('加载历史失败:', e)
   }
+}
+
+// 兼容旧函数名
+async function loadTrajectory(convId) {
+  await loadTrajectoryWithRetry(convId)
+}
+async function loadHistory(convId) {
+  await loadHistoryWithRetry(convId)
 }
 
 async function handleSend() {
@@ -379,10 +537,10 @@ async function handleSend() {
     const chatItem = {
       user: content,
       assistant: data.content || '...',
-      s: data.trajectory?.[data.trajectory.length - 1]?.s_t || {},
-      a: data.trajectory?.[data.trajectory.length - 1]?.a_t || {},
-      o: data.trajectory?.[data.trajectory.length - 1]?.o_t || {},
-      r: data.trajectory?.[data.trajectory.length - 1]?.r_t || 0
+      s: data.trajectory?.[data.trajectory.length - 1]?.state || {},
+      a: data.trajectory?.[data.trajectory.length - 1]?.action || {},
+      o: data.trajectory?.[data.trajectory.length - 1]?.observation || {},
+      r: data.trajectory?.[data.trajectory.length - 1]?.reward || 0
     }
     store.appendChat(chatItem)
     expandedIdx.value = chatList.value.length - 1
@@ -407,12 +565,19 @@ async function handleFork() {
     const newConv = {
       conversation_id: res.data.new_conversation_id,
       title: `${currentConv?.title || '对话'} (fork)`,
+      parent_id: currentConvId.value,
       status: 'active',
       model: currentConv?.model || 'deepseek-chat'
     }
     store.addConv(newConv)
     store.setActiveCount(convList.value.length)
-    ElMessage.success('Fork 成功')
+    ElMessage.success('Fork 成功，正在准备新容器...')
+    
+    // 等待容器完全就绪（延迟2秒再尝试加载数据）
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    await loadHistoryWithRetry(newConv.conversation_id, 3, 1000)
+    
+    await nextTick()
     drawGraph()
   } catch (e) {
     ElMessage.error('Fork 失败')
@@ -440,6 +605,8 @@ async function handleMerge() {
     if (targetConv) {
       await loadHistory(mergeTargetId.value)
     }
+    await nextTick()
+    drawGraph()
   } catch (e) {
     ElMessage.error('合并失败')
   } finally {
@@ -473,6 +640,7 @@ async function handleDelete() {
       store.setChatList([])
     }
     ElMessage.success('删除成功')
+    await nextTick()
     drawGraph()
   } catch (e) {
     ElMessage.error('删除失败')
@@ -481,6 +649,7 @@ async function handleDelete() {
   }
 }
 
+// 绘制可缩放拖拽的分支图，并保存 zoom 对象
 function drawGraph() {
   if (!svgCanvas.value || convList.value.length === 0) return
 
@@ -488,67 +657,94 @@ function drawGraph() {
   const width = container.clientWidth
   const height = container.clientHeight
 
-  d3.select(svgCanvas.value).selectAll('*').remove()
-
   const svg = d3.select(svgCanvas.value)
-    .attr('width', width)
-    .attr('height', height)
+  svg.selectAll('*').remove()
 
-  const nodes = convList.value.map((conv, i) => ({
-    id: conv.conversation_id,
-    title: conv.title,
-    y: (i + 1) * (height / (convList.value.length + 1))
-  }))
+  const zoom = d3.zoom()
+    .scaleExtent([0.2, 5])
+    .on('zoom', (event) => {
+      svgGroup.attr('transform', event.transform)
+    })
+  currentZoom = zoom
 
-  const links = nodes.slice(1).map((node, i) => ({
-    source: nodes[i].id,
-    target: node.id
-  }))
+  svg.call(zoom)
 
-  svg.selectAll('.link')
-    .data(links)
+  const svgGroup = svg.append('g').attr('class', 'graph-group')
+
+  // 构建节点树结构
+  const nodeMap = new Map()
+  convList.value.forEach(conv => {
+    nodeMap.set(conv.conversation_id, {
+      id: conv.conversation_id,
+      title: conv.title,
+      parent_id: conv.parent_id || null,
+      children: []
+    })
+  })
+
+  nodeMap.forEach(node => {
+    if (node.parent_id && nodeMap.has(node.parent_id)) {
+      nodeMap.get(node.parent_id).children.push(node)
+    }
+  })
+
+  const rootNodes = Array.from(nodeMap.values()).filter(n => !n.parent_id)
+  if (rootNodes.length === 0) return
+  const root = d3.hierarchy(rootNodes[0])
+
+  const treeLayout = d3.tree().size([width - 100, height - 100])
+  treeLayout(root)
+
+  // 连线
+  svgGroup.selectAll('.link')
+    .data(root.links())
     .enter()
-    .append('line')
+    .append('path')
     .attr('class', 'link')
-    .attr('x1', 50)
-    .attr('y1', d => nodes.find(n => n.id === d.source).y)
-    .attr('x2', 50)
-    .attr('y2', d => nodes.find(n => n.id === d.target).y)
+    .attr('d', d3.linkVertical()
+      .x(d => d.x)
+      .y(d => d.y)
+    )
+    .attr('fill', 'none')
     .attr('stroke', '#999')
     .attr('stroke-width', 2)
 
-  const nodeGroups = svg.selectAll('.node')
-    .data(nodes)
+  // 节点
+  const nodeGroups = svgGroup.selectAll('.node')
+    .data(root.descendants())
     .enter()
     .append('g')
     .attr('class', 'node')
-    .attr('transform', d => `translate(50, ${d.y})`)
+    .attr('transform', d => `translate(${d.x}, ${d.y})`)
     .on('click', (event, d) => {
-      const conv = convList.value.find(c => c.conversation_id === d.id)
+      event.stopPropagation()
+      const conv = convList.value.find(c => c.conversation_id === d.data.id)
       if (conv) handleSwitchConv(conv)
     })
     .style('cursor', 'pointer')
 
   nodeGroups.append('circle')
     .attr('r', 8)
-    .attr('fill', d => d.id === currentConvId.value ? '#007acc' : '#4caf50')
+    .attr('fill', d => d.data.id === currentConvId.value ? '#007acc' : '#4caf50')
     .attr('stroke', '#fff')
     .attr('stroke-width', 2)
 
   nodeGroups.append('text')
     .attr('x', 15)
     .attr('y', 5)
-    .text(d => d.title)
+    .text(d => d.data.title)
     .attr('font-size', '12px')
     .attr('fill', '#333')
 }
 </script>
 
 <style scoped>
+/* 基础滚动条样式 */
 * {
   scrollbar-width: thin;
 }
 
+/* 轨迹卡片网格布局 */
 .trajectory-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -561,6 +757,7 @@ function drawGraph() {
   }
 }
 
+/* 卡片通用样式 */
 .trajectory-card {
   background: white;
   border-radius: 1rem;
@@ -575,6 +772,7 @@ function drawGraph() {
   border-color: #e2e8f0;
 }
 
+/* 卡片头部 */
 .card-header {
   padding: 0.5rem 0.75rem;
   font-size: 0.7rem;
@@ -592,24 +790,75 @@ function drawGraph() {
 .card-obs .card-header { background: #fffbeb; color: #b45309; }
 .card-reward .card-header { background: #faf5ff; color: #6b21a5; }
 
+/* 卡片内容区 */
 .card-content {
   padding: 0.75rem;
+  overflow-x: auto;
+  word-break: break-word;
 }
 
-.json-view {
-  background: #f9fafb;
-  border-radius: 0.75rem;
-  padding: 0.5rem;
+/* el-tree 样式 */
+.json-tree {
+  background: transparent;
+  font-size: 0.7rem;
   font-family: 'SF Mono', 'Fira Code', monospace;
-  font-size: 0.65rem;
+}
+.json-tree .el-tree-node__content {
+  height: auto !important;
+  min-height: 28px;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  padding: 4px 0;
+  align-items: flex-start;
+}
+.json-tree .el-tree-node__label {
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
   line-height: 1.4;
+  display: inline-block;
+  max-width: 100%;
+  width: 100%;
+}
+.json-tree .el-tree-node__expand-icon {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.json-tree .el-tree-node__children {
+  padding-left: 16px;
+}
+
+/* 原始 JSON 展示 */
+.json-raw {
+  margin-top: 12px;
+  border-top: 1px dashed #e2e8f0;
+  padding-top: 8px;
+}
+.json-raw-header {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+.json-raw-content {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 0.7rem;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  line-height: 1.4;
+  color: #1e293b;
   overflow-x: auto;
   white-space: pre-wrap;
-  word-break: break-word;
-  color: #1f2937;
-  border: 1px solid #eef2f6;
+  word-break: break-all;
+  max-height: 200px;
+  margin: 0;
 }
 
+/* Reward 数字样式 */
 .reward-number {
   font-size: 2.5rem;
   font-weight: 800;
@@ -621,5 +870,69 @@ function drawGraph() {
 }
 .reward-number:hover {
   transform: scale(1.02);
+}
+
+/* ==================== Markdown 渲染样式 ==================== */
+.markdown-body {
+  line-height: 1.6;
+}
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+.markdown-body h1 { font-size: 1.5em; }
+.markdown-body h2 { font-size: 1.3em; }
+.markdown-body h3 { font-size: 1.1em; }
+.markdown-body p {
+  margin-bottom: 0.8em;
+}
+.markdown-body ul,
+.markdown-body ol {
+  margin: 0.5em 0;
+  padding-left: 1.5em;
+}
+.markdown-body li {
+  margin: 0.2em 0;
+}
+.markdown-body code {
+  background-color: #f3f4f6;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-family: 'SF Mono', monospace;
+  font-size: 0.85em;
+}
+.markdown-body pre {
+  background-color: #f3f4f6;
+  padding: 0.8em;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.85em;
+}
+.markdown-body pre code {
+  background: none;
+  padding: 0;
+}
+.markdown-body blockquote {
+  border-left: 4px solid #d1d5db;
+  margin: 0.5em 0;
+  padding-left: 1em;
+  color: #4b5563;
+}
+.markdown-body a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+.markdown-body a:hover {
+  text-decoration: underline;
+}
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
 }
 </style>
