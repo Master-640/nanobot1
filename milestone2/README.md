@@ -1,4 +1,67 @@
-# Milestone 2 - 容器化 Nanobot Agent
+# SAYG-Mem 实验复现指南
+
+## 步骤0：准备 Python 虚拟环境
+
+本项目依赖 Python 3.10+ 及若干第三方库。为隔离环境、确保可复现性，请先创建并激活虚拟环境。
+
+```bash
+# 进入项目根目录
+cd d:/collections2026/phd_application/nanobot1/milestone2
+
+# 创建虚拟环境（首次运行）
+python -m venv shared/venv
+
+# 激活虚拟环境（每次新终端会话都需要执行）
+# Linux / WSL:
+source shared/venv/bin/activate
+# Windows PowerShell:
+.\shared\venv\Scripts\activate
+
+# 安装项目依赖
+pip install --upgrade pip
+pip install httpx aiohttp aiofiles jieba fastapi uvicorn pydantic
+```
+
+验证环境：
+
+```bash
+python -c "import httpx, jieba; print('环境就绪')"
+```
+
+> 注意：后续所有 Python 脚本均需在已激活的虚拟环境中执行。
+
+## 步骤1：重新构建 Agent 镜像
+
+```bash
+DOCKER_BUILDKIT=1 docker build -f shared/Dockerfile.agent -t nanobot-agent:latest .
+DOCKER_BUILDKIT=1 docker build -f shared/Dockerfile.bff -t nanobot-bff:latest .
+```
+
+## 步骤2：启动 BFF 服务（终端 1）
+
+```bash
+cd d:/collections2026/phd_application/nanobot1/milestone2
+./run_km_system.sh
+```
+
+## 步骤3：运行实验脚本（终端 2）
+
+```bash
+cd d:/collections2026/phd_application/nanobot1/milestone2
+source shared/venv/bin/activate
+
+# 吞吐量对比实验（核心实验）
+python run_throughput_comparison.py
+
+# 或单独运行 A 组吞吐量测试（SAYG-Mem）
+python learn_throughput_fixed_time_a.py
+
+# 或单独运行 B 组测试（Baseline）
+python learn_throughput_fixed_time_b.py
+
+# 扩展性测试（10/20/40 Agent）
+python run_scalability_test.py
+```
 
 ## 架构概览
 
