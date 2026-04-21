@@ -1,5 +1,5 @@
 """
-SAYG-Mem 吞吐量实验 - A组（固定时间预算 + 无界推理 + 异步合并）
+SAYG-Mem 吞吐量实验 - A组（固定时间预算 + 灵活推理 + 异步合并）
 
 实验设计：
 - 固定时间预算（默认 300 秒）
@@ -293,8 +293,8 @@ async def ask_km_to_parse(raw_content: str, max_retries: int = 2) -> Optional[Di
         return None
 
 
-async def single_agent_learning_unbounded(agent_info: Dict, deadline: float, role: Dict = None) -> Dict:
-    """单个 Agent 无界推理，直到时间预算耗尽"""
+async def single_agent_learning_dance(agent_info: Dict, deadline: float, role: Dict = None) -> Dict:
+    """单个 Agent 舞动推理，直到时间预算耗尽"""
     conv_id = agent_info["conversation_id"]
     port = agent_info["container_port"]
     agent_name = f"Agent_{conv_id[:8]}"
@@ -547,7 +547,7 @@ async def export_public_memory(output_path: str) -> int:
 async def run_throughput_experiment_a() -> Dict:
     """运行 A 组吞吐量实验"""
     print("\n" + "=" * 70)
-    print("A组：SAyG-Mem 吞吐量实验（固定时间预算 + 无界推理 + 异步合并）")
+    print("A组：SAYG-Mem 吞吐量实验（固定时间预算 + 灵活推理 + 异步合并）")
     print(f"时间预算：{TIME_BUDGET}秒，Agent数量：{len(AGENT_ROLES)}")
     print("=" * 70)
 
@@ -615,7 +615,7 @@ async def run_throughput_experiment_a() -> Dict:
     print(f"\n[实验开始] 截止时间：{TIME_BUDGET}秒后")
 
     # 启动所有 Agent 并发推理
-    tasks = [single_agent_learning_unbounded(agent, experiment_deadline, role=agent.get("role")) for agent in agents]
+    tasks = [single_agent_learning_dance(agent, experiment_deadline, role=agent.get("role")) for agent in agents]
     results = await asyncio.gather(*tasks)
 
     # 统计结果

@@ -1,0 +1,153 @@
+{
+  "agent_count": 20,
+  "timestamp": "2026-04-21T08:35:01.143587",
+  "a_group": {
+    "group": "A",
+    "time_budget": 300,
+    "agent_count": 20,
+    "total_rounds": 152,
+    "avg_rounds_per_agent": 7.6,
+    "total_inference_time": 4338.376280223998,
+    "actual_time": 350.66214898500016,
+    "idle_ratio": 0.38140225673322165,
+    "failed_rounds": 0,
+    "public_memory_count": 174,
+    "agent_details": [
+      {
+        "role": "技术架构师",
+        "completed_rounds": 7,
+        "failed_rounds": 0,
+        "inference_time": 235.7905371679999
+      },
+      {
+        "role": "产品经理",
+        "completed_rounds": 8,
+        "failed_rounds": 0,
+        "inference_time": 217.92907779899997
+      },
+      {
+        "role": "数据分析师",
+        "completed_rounds": 8,
+        "failed_rounds": 0,
+        "inference_time": 216.16648974999976
+      },
+      {
+        "role": "安全专家",
+        "completed_rounds": 9,
+        "failed_rounds": 0,
+        "inference_time": 211.64211846499984
+      },
+      {
+        "role": "运维工程师",
+        "completed_rounds": 9,
+        "failed_rounds": 0,
+        "inference_time": 196.80157339300013
+      },
+      {
+        "role": "前端工程师",
+        "completed_rounds": 7,
+        "failed_rounds": 0,
+        "inference_time": 214.22524480000016
+      },
+      {
+        "role": "后端工程师",
+        "completed_rounds": 6,
+        "failed_rounds": 0,
+        "inference_time": 214.27242386700004
+      },
+      {
+        "role": "移动开发工程师",
+        "completed_rounds": 6,
+        "failed_rounds": 0,
+        "inference_time": 243.19916523499978
+      },
+      {
+        "role": "DevOps工程师",
+        "completed_rounds": 6,
+        "failed_rounds": 0,
+        "inference_time": 268.1475894419998
+      },
+      {
+        "role": "QA工程师",
+        "completed_rounds": 2,
+        "failed_rounds": 0,
+        "inference_time": 308.831386823
+      },
+      {
+        "role": "角色1",
+        "completed_rounds": 11,
+        "failed_rounds": 0,
+        "inference_time": 178.85527988299964
+      },
+      {
+        "role": "角色2",
+        "completed_rounds": 10,
+        "failed_rounds": 0,
+        "inference_time": 175.97480304500004
+      },
+      {
+        "role": "角色3",
+        "completed_rounds": 9,
+        "failed_rounds": 0,
+        "inference_time": 189.05156153899952
+      },
+      {
+        "role": "角色4",
+        "completed_rounds": 9,
+        "failed_rounds": 0,
+        "inference_time": 183.7432341189999
+      },
+      {
+        "role": "角色5",
+        "completed_rounds": 9,
+        "failed_rounds": 0,
+        "inference_time": 188.71929520599997
+      },
+      {
+        "role": "角色6",
+        "completed_rounds": 8,
+        "failed_rounds": 0,
+        "inference_time": 195.81166613999994
+      },
+      {
+        "role": "角色7",
+        "completed_rounds": 8,
+        "failed_rounds": 0,
+        "inference_time": 196.9679288690004
+      },
+      {
+        "role": "角色8",
+        "completed_rounds": 3,
+        "failed_rounds": 0,
+        "inference_time": 273.41596894199984
+      },
+      {
+        "role": "角色9",
+        "completed_rounds": 6,
+        "failed_rounds": 0,
+        "inference_time": 240.04741885499993
+      },
+      {
+        "role": "角色10",
+        "completed_rounds": 11,
+        "failed_rounds": 0,
+        "inference_time": 188.78351688399994
+      }
+    ]
+  },
+  "b_group": {
+    "group": "B",
+    "time_budget": 300,
+    "agent_count": 20,
+    "total_rounds": 20,
+    "completed_full_rounds": 1,
+    "avg_rounds_per_agent": 1.0,
+    "total_inference_time": 2288.8892829609995,
+    "total_merge_time": 7.302045158000055,
+    "actual_time": 331.6833994680003,
+    "idle_ratio": 0.6549587216857647,
+    "merge_time_ratio": 0.02201510588022218,
+    "failed_rounds": 0,
+    "public_memory_count": 64
+  }
+}
