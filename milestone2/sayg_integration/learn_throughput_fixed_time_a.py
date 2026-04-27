@@ -544,12 +544,21 @@ async def export_public_memory(output_path: str) -> int:
         return 0
 
 
-async def run_throughput_experiment_a() -> Dict:
-    """运行 A 组吞吐量实验"""
+async def run_throughput_experiment_a(output_filename: str = None) -> Dict:
+    """运行 A 组吞吐量实验
+
+    Args:
+        output_filename: 可选的输出文件名后缀，如 "5_30" 会生成 "a_throughput_5_30.jsonl"
+    """
     print("\n" + "=" * 70)
     print("A组：SAYG-Mem 吞吐量实验（固定时间预算 + 灵活推理 + 异步合并）")
     print(f"时间预算：{TIME_BUDGET}秒，Agent数量：{len(AGENT_ROLES)}")
     print("=" * 70)
+
+    if output_filename:
+        pm_file = os.path.join(EXPERIMENT_DIR, f"a_throughput_{output_filename}.jsonl")
+    else:
+        pm_file = A_PUBLIC_MEMORY_FILE
 
     # 等待 BFF 和 KM 就绪
     if not await wait_for_bff():
@@ -650,7 +659,7 @@ async def run_throughput_experiment_a() -> Dict:
     
     # 导出 PublicMemory
     os.makedirs(EXPERIMENT_DIR, exist_ok=True)
-    pm_count = await export_public_memory(A_PUBLIC_MEMORY_FILE)
+    pm_count = await export_public_memory(pm_file)
 
     # 计算指标
     idle_time = actual_time * len(agents) - total_inference_time

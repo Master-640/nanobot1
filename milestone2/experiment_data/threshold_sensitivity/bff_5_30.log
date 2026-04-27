@@ -1,0 +1,18 @@
+/mnt/d/collections2026/phd_application/nanobot1/milestone2/bff/bff_service.py:712: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+INFO:     Started server process [33379]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Shutting down
+INFO:     Waiting for background tasks to complete. (CTRL+C to force quit)
+2026-04-21 23:23:57,164 - httpx - INFO - HTTP Request: GET http://localhost:22638/health "HTTP/1.1 200 OK"
+2026-04-21 23:23:57,387 - httpx - INFO - HTTP Request: GET http://localhost:22638/stats "HTTP/1.1 200 OK"
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [33379]

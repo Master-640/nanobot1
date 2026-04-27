@@ -627,6 +627,7 @@ async def health_check():
 @app.post("/experiment/cleanup")
 async def experiment_cleanup():
     """清理实验环境 - 停止所有协作者容器、Consolidator，清理PublicMemory"""
+    global km_container_id
     print("[BFF] 执行实验清理...")
     results = {"stopped_agents": 0, "stopped_consolidator": 0, "cleaned_files": []}
     
@@ -654,13 +655,26 @@ async def experiment_cleanup():
     except Exception as e:
         print(f"[BFF] 停止 Consolidator 失败: {e}")
     
+    # 停止 KM 容器（以便用新配置重建）
+    if km_container_id:
+        try:
+            km_container_name = f"nanobot_km_{km_container_id}"
+            km_container = orchestrator.docker_client.containers.get(km_container_name)
+            km_container.stop(timeout=5)
+            km_container.remove()
+            print(f"[BFF] 已停止并删除 KM容器: {km_container_name}")
+        except Exception as e:
+            print(f"[BFF] KM容器清理失败: {e}")
+        finally:
+            km_container_id = None
+
     # 清理全局状态
     cleared_convs = len(conversations)
     conversations.clear()
     branches.clear()
     container_ports.clear()
     print(f"[BFF] 已清空 conversations ({cleared_convs}), branches 和 container_ports")
-    
+
     return results
 
 

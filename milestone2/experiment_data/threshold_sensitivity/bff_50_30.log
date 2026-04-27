@@ -1,0 +1,300 @@
+/mnt/d/collections2026/phd_application/nanobot1/milestone2/bff/bff_service.py:712: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+INFO:     Started server process [32547]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2026-04-21 23:16:00,407 - httpx - INFO - HTTP Request: GET http://localhost:3820/health "HTTP/1.1 200 OK"
+2026-04-21 23:16:00,643 - httpx - INFO - HTTP Request: GET http://localhost:3820/stats "HTTP/1.1 200 OK"
+2026-04-21 23:16:00,647 - httpx - INFO - HTTP Request: GET http://localhost:3820/stats "HTTP/1.1 200 OK"
+2026-04-21 23:16:00,890 - httpx - INFO - HTTP Request: POST http://localhost:3820/preset-skill-0 "HTTP/1.1 200 OK"
+2026-04-21 23:16:05,812 - httpx - INFO - HTTP Request: GET http://localhost:3823/health "HTTP/1.1 200 OK"
+2026-04-21 23:16:10,576 - httpx - INFO - HTTP Request: GET http://localhost:3827/health "HTTP/1.1 200 OK"
+2026-04-21 23:16:15,334 - httpx - INFO - HTTP Request: GET http://localhost:3832/health "HTTP/1.1 200 OK"
+2026-04-21 23:16:20,187 - httpx - INFO - HTTP Request: GET http://localhost:3839/health "HTTP/1.1 200 OK"
+2026-04-21 23:16:24,958 - httpx - INFO - HTTP Request: GET http://localhost:3848/health "HTTP/1.1 200 OK"
+2026-04-21 23:16:29,863 - httpx - INFO - HTTP Request: GET http://localhost:3859/health "HTTP/1.1 200 OK"
+2026-04-21 23:16:30,777 - httpx - INFO - HTTP Request: GET http://localhost:3823/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:16:30,891 - httpx - INFO - HTTP Request: GET http://localhost:3827/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:16:31,012 - httpx - INFO - HTTP Request: GET http://localhost:3832/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:16:31,132 - httpx - INFO - HTTP Request: GET http://localhost:3839/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:16:31,323 - httpx - INFO - HTTP Request: GET http://localhost:3848/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:16:31,452 - httpx - INFO - HTTP Request: GET http://localhost:3859/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:16:34,677 - httpx - INFO - HTTP Request: GET http://localhost:3872/health "HTTP/1.1 200 OK"
+2026-04-21 23:16:39,477 - httpx - INFO - HTTP Request: GET http://localhost:3888/health "HTTP/1.1 200 OK"
+2026-04-21 23:16:44,383 - httpx - INFO - HTTP Request: GET http://localhost:3905/health "HTTP/1.1 200 OK"
+2026-04-21 23:16:49,241 - httpx - INFO - HTTP Request: GET http://localhost:3924/health "HTTP/1.1 200 OK"
+2026-04-21 23:16:52,526 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=ec137e31 "HTTP/1.1 200 OK"
+2026-04-21 23:16:52,528 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=d843e271 "HTTP/1.1 200 OK"
+2026-04-21 23:16:52,528 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=d8f9c96b "HTTP/1.1 200 OK"
+2026-04-21 23:16:52,529 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=ff472d8a "HTTP/1.1 200 OK"
+2026-04-21 23:16:52,530 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=5e5a2003 "HTTP/1.1 200 OK"
+2026-04-21 23:16:52,530 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=c776915d "HTTP/1.1 200 OK"
+2026-04-21 23:16:52,531 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=7b88039b "HTTP/1.1 200 OK"
+2026-04-21 23:16:52,531 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=301d792c "HTTP/1.1 200 OK"
+2026-04-21 23:16:52,556 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=53da53dd "HTTP/1.1 200 OK"
+2026-04-21 23:16:52,557 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=92bd2e44 "HTTP/1.1 200 OK"
+2026-04-21 23:17:28,689 - httpx - INFO - HTTP Request: GET http://localhost:3823/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:29,026 - httpx - INFO - HTTP Request: GET http://localhost:3827/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:29,136 - httpx - INFO - HTTP Request: GET http://localhost:3832/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:29,252 - httpx - INFO - HTTP Request: GET http://localhost:3839/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:29,342 - httpx - INFO - HTTP Request: GET http://localhost:3848/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:29,452 - httpx - INFO - HTTP Request: GET http://localhost:3859/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:29,557 - httpx - INFO - HTTP Request: GET http://localhost:3872/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:29,720 - httpx - INFO - HTTP Request: GET http://localhost:3888/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:29,833 - httpx - INFO - HTTP Request: GET http://localhost:3905/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:29,946 - httpx - INFO - HTTP Request: GET http://localhost:3924/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:46,637 - httpx - INFO - HTTP Request: GET http://localhost:3823/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:46,788 - httpx - INFO - HTTP Request: GET http://localhost:3827/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:46,891 - httpx - INFO - HTTP Request: GET http://localhost:3832/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:47,014 - httpx - INFO - HTTP Request: GET http://localhost:3839/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:47,118 - httpx - INFO - HTTP Request: GET http://localhost:3848/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:47,216 - httpx - INFO - HTTP Request: GET http://localhost:3859/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:47,344 - httpx - INFO - HTTP Request: GET http://localhost:3872/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:47,443 - httpx - INFO - HTTP Request: GET http://localhost:3888/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:47,545 - httpx - INFO - HTTP Request: GET http://localhost:3905/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:17:47,636 - httpx - INFO - HTTP Request: GET http://localhost:3924/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:18:17,850 - httpx - INFO - HTTP Request: GET http://localhost:3823/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:18:17,961 - httpx - INFO - HTTP Request: GET http://localhost:3827/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:18:18,094 - httpx - INFO - HTTP Request: GET http://localhost:3832/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:18:18,269 - httpx - INFO - HTTP Request: GET http://localhost:3839/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:18:18,384 - httpx - INFO - HTTP Request: GET http://localhost:3848/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:18:18,521 - httpx - INFO - HTTP Request: GET http://localhost:3859/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:18:18,649 - httpx - INFO - HTTP Request: GET http://localhost:3872/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:18:18,779 - httpx - INFO - HTTP Request: GET http://localhost:3888/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:18:18,880 - httpx - INFO - HTTP Request: GET http://localhost:3905/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:18:19,078 - httpx - INFO - HTTP Request: GET http://localhost:3924/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:12,468 - httpx - INFO - HTTP Request: GET http://localhost:3823/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:12,576 - httpx - INFO - HTTP Request: GET http://localhost:3827/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:12,686 - httpx - INFO - HTTP Request: GET http://localhost:3832/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:12,826 - httpx - INFO - HTTP Request: GET http://localhost:3839/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:12,942 - httpx - INFO - HTTP Request: GET http://localhost:3848/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:13,076 - httpx - INFO - HTTP Request: GET http://localhost:3859/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:13,192 - httpx - INFO - HTTP Request: GET http://localhost:3872/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:13,298 - httpx - INFO - HTTP Request: GET http://localhost:3888/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:13,398 - httpx - INFO - HTTP Request: GET http://localhost:3905/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:13,510 - httpx - INFO - HTTP Request: GET http://localhost:3924/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:22,503 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=d8f9c96b "HTTP/1.1 200 OK"
+2026-04-21 23:19:34,750 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=d843e271 "HTTP/1.1 200 OK"
+2026-04-21 23:19:34,754 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=5e5a2003 "HTTP/1.1 200 OK"
+2026-04-21 23:19:43,652 - httpx - INFO - HTTP Request: GET http://localhost:3823/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:43,816 - httpx - INFO - HTTP Request: GET http://localhost:3827/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:43,941 - httpx - INFO - HTTP Request: GET http://localhost:3832/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:44,078 - httpx - INFO - HTTP Request: GET http://localhost:3839/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:44,177 - httpx - INFO - HTTP Request: GET http://localhost:3848/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:44,266 - httpx - INFO - HTTP Request: GET http://localhost:3859/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:44,358 - httpx - INFO - HTTP Request: GET http://localhost:3872/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:44,491 - httpx - INFO - HTTP Request: GET http://localhost:3888/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:44,590 - httpx - INFO - HTTP Request: GET http://localhost:3905/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:19:44,723 - httpx - INFO - HTTP Request: GET http://localhost:3924/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:14,848 - httpx - INFO - HTTP Request: GET http://localhost:3823/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:14,974 - httpx - INFO - HTTP Request: GET http://localhost:3827/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:15,131 - httpx - INFO - HTTP Request: GET http://localhost:3832/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:15,236 - httpx - INFO - HTTP Request: GET http://localhost:3839/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:15,381 - httpx - INFO - HTTP Request: GET http://localhost:3848/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:15,494 - httpx - INFO - HTTP Request: GET http://localhost:3859/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:15,631 - httpx - INFO - HTTP Request: GET http://localhost:3872/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:15,770 - httpx - INFO - HTTP Request: GET http://localhost:3888/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:15,895 - httpx - INFO - HTTP Request: GET http://localhost:3905/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:16,022 - httpx - INFO - HTTP Request: GET http://localhost:3924/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:23,628 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=92bd2e44 "HTTP/1.1 200 OK"
+2026-04-21 23:20:35,886 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=ec137e31 "HTTP/1.1 200 OK"
+2026-04-21 23:20:35,890 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=301d792c "HTTP/1.1 200 OK"
+[BFF] 初始化数据库...
+[DB] usage 字段已存在，跳过迁移
+[DB] 数据库初始化完成
+[BFF] 启动时清理无效对话...
+[BFF] 清理完成，剩余对话: 0
+[BFF] 开始迁移对话数据，补充 Power 机制字段...
+[BFF] 迁移完成，共处理 0 个对话
+[BFF] 启动定时邻居发现任务
+[BFF] 启动容器健康监控任务
+[BFF] 邻居发现: 节点数量不足 (0)，跳过
+[BFF] KM容器不存在，创建中...
+[Orchestrator] PUBLIC_MEMORY_HOST_PATH from env: None
+[Orchestrator] Using fallback path: /mnt/d/collections2026/phd_application/nanobot1/data/public_memory
+[Orchestrator] KM容器挂载PublicMemory: /mnt/d/collections2026/phd_application/nanobot1/data/public_memory -> /app/public_memory
+[Orchestrator] KM合并阈值: 50, 间隔: 30秒
+[Orchestrator] KM的BFF_BASE_URL: http://host.docker.internal:8000
+[Orchestrator] Container nanobot_conv_5715b6e3 is ready
+[Orchestrator] Created container nanobot_conv_5715b6e3
+[BFF] KM容器已创建: 5715b6e3, 端口: 3820
+[KM] 预置0号Skill，转发到KM容器
+[Orchestrator] Container nanobot_conv_ec137e31 is ready
+[Orchestrator] Created container nanobot_conv_ec137e31
+[Orchestrator] Container nanobot_conv_d843e271 is ready
+[Orchestrator] Created container nanobot_conv_d843e271
+[Orchestrator] Container nanobot_conv_d8f9c96b is ready
+[Orchestrator] Created container nanobot_conv_d8f9c96b
+[Orchestrator] Container nanobot_conv_5e5a2003 is ready
+[Orchestrator] Created container nanobot_conv_5e5a2003
+[Orchestrator] Container nanobot_conv_ff472d8a is ready
+[Orchestrator] Created container nanobot_conv_ff472d8a
+[Orchestrator] Container nanobot_conv_c776915d is ready
+[Orchestrator] Created container nanobot_conv_c776915d
+[BFF] 获取Agent ec137e31 堆段: 0 条
+[BFF] 获取Agent d843e271 堆段: 0 条
+[BFF] 获取Agent d8f9c96b 堆段: 0 条
+[BFF] 获取Agent 5e5a2003 堆段: 0 条
+[BFF] 获取Agent ff472d8a 堆段: 0 条
+[BFF] 获取Agent c776915d 堆段: 0 条
+[BFF] all-unmerged 获取完成: 0 条
+[Orchestrator] Container nanobot_conv_7b88039b is ready
+[Orchestrator] Created container nanobot_conv_7b88039b
+[Orchestrator] Container nanobot_conv_92bd2e44 is ready
+[Orchestrator] Created container nanobot_conv_92bd2e44
+[Orchestrator] Container nanobot_conv_53da53dd is ready
+[Orchestrator] Created container nanobot_conv_53da53dd
+[Orchestrator] Container nanobot_conv_301d792c is ready
+[Orchestrator] Created container nanobot_conv_301d792c
+[BFF] 邻居发现: 所有父子关系已建立
+[BFF] 读取PublicMemory (物理路径): /mnt/d/collections2026/phd_application/nanobot1/milestone2/data/public_memory/public_memory.jsonl, top_k=2
+[BFF] 读取PublicMemory完成: 0 条记录
+[BFF] 读取PublicMemory (物理路径): /mnt/d/collections2026/phd_application/nanobot1/milestone2/data/public_memory/public_memory.jsonl, top_k=2
+[BFF] 读取PublicMemory完成: 0 条记录
+[BFF] 读取PublicMemory (物理路径): /mnt/d/collections2026/phd_application/nanobot1/milestone2/data/public_memory/public_memory.jsonl, top_k=2
+[BFF] 读取PublicMemory完成: 0 条记录
+[BFF] 读取PublicMemory (物理路径): /mnt/d/collections2026/phd_application/nanobot1/milestone2/data/public_memory/public_memory.jsonl, top_k=2
+[BFF] 读取PublicMemory完成: 0 条记录
+[BFF] 读取PublicMemory (物理路径): /mnt/d/collections2026/phd_application/nanobot1/milestone2/data/public_memory/public_memory.jsonl, top_k=2
+[BFF] 读取PublicMemory完成: 0 条记录
+[BFF] 读取PublicMemory (物理路径): /mnt/d/collections2026/phd_application/nanobot1/milestone2/data/public_memory/public_memory.jsonl, top_k=2
+[BFF] 读取PublicMemory完成: 0 条记录
+[BFF] 读取PublicMemory (物理路径): /mnt/d/collections2026/phd_application/nanobot1/milestone2/data/public_memory/public_memory.jsonl, top_k=2
+[BFF] 读取PublicMemory完成: 0 条记录
+[BFF] 读取PublicMemory (物理路径): /mnt/d/collections2026/phd_application/nanobot1/milestone2/data/public_memory/public_memory.jsonl, top_k=2
+[BFF] 读取PublicMemory完成: 0 条记录
+[BFF] 读取PublicMemory (物理路径): /mnt/d/collections2026/phd_application/nanobot1/milestone2/data/public_memory/public_memory.jsonl, top_k=2
+[BFF] 读取PublicMemory完成: 0 条记录
+[BFF] 读取PublicMemory (物理路径): /mnt/d/collections2026/phd_application/nanobot1/milestone2/data/public_memory/public_memory.jsonl, top_k=2
+[BFF] 读取PublicMemory完成: 0 条记录
+[BFF] all-unmerged 请求正在进行，等待完成...
+[BFF] 获取Agent ec137e31 堆段: 0 条
+[BFF] 获取Agent d843e271 堆段: 0 条
+[BFF] 获取Agent d8f9c96b 堆段: 0 条
+[BFF] 获取Agent 5e5a2003 堆段: 0 条
+[BFF] 获取Agent ff472d8a 堆段: 0 条
+[BFF] 获取Agent c776915d 堆段: 0 条
+[BFF] 获取Agent 7b88039b 堆段: 0 条
+[BFF] 获取Agent 92bd2e44 堆段: 0 条
+[BFF] 获取Agent 53da53dd 堆段: 0 条
+[BFF] 获取Agent 301d792c 堆段: 0 条
+[BFF] all-unmerged 获取完成: 0 条
+[BFF] 获取Agent ec137e31 堆段: 0 条
+[BFF] 获取Agent d843e271 堆段: 0 条
+[BFF] 获取Agent d8f9c96b 堆段: 0 条
+[BFF] 获取Agent 5e5a2003 堆段: 0 条
+[BFF] 获取Agent ff472d8a 堆段: 0 条
+[BFF] 获取Agent c776915d 堆段: 0 条
+[BFF] 获取Agent 7b88039b 堆段: 0 条
+[BFF] 获取Agent 92bd2e44 堆段: 0 条
+[BFF] 获取Agent 53da53dd 堆段: 0 条
+[BFF] 获取Agent 301d792c 堆段: 0 条
+[BFF] all-unmerged 获取完成: 0 条
+[BFF] 邻居发现: 所有父子关系已建立
+[BFF] 获取Agent ec137e31 堆段: 0 条
+[BFF] 获取Agent d843e271 堆段: 0 条
+[BFF] 获取Agent d8f9c96b 堆段: 0 条
+[BFF] 获取Agent 5e5a2003 堆段: 0 条
+[BFF] 获取Agent ff472d8a 堆段: 0 条
+[BFF] 获取Agent c776915d 堆段: 0 条
+[BFF] 获取Agent 7b88039b 堆段: 0 条
+[BFF] 获取Agent 92bd2e44 堆段: 0 条
+[BFF] 获取Agent 53da53dd 堆段: 0 条
+[BFF] 获取Agent 301d792c 堆段: 0 条
+[BFF] all-unmerged 获取完成: 0 条
+[BFF] 邻居发现: 所有父子关系已建立
+[BFF] 获取Agent ec137e31 堆段: 0 条
+[BFF] 获取Agent d843e271 堆段: 0 条
+[BFF] 获取Agent d8f9c96b 堆段: 0 条
+[BFF] 获取Agent 5e5a2003 堆段: 0 条
+[BFF] 获取Agent ff472d8a 堆段: 0 条
+[BFF] 获取Agent c776915d 堆段: 0 条
+[BFF] 获取Agent 7b88039b 堆段: 0 条
+[BFF] 获取Agent 92bd2e44 堆段: 0 条
+[BFF] 获取Agent 53da53dd 堆段: 0 条
+[BFF] 获取Agent 301d792c 堆段: 0 条
+[BFF] all-unmerged 获取完成: 0 条
+[BFF] 读取PublicMemory (物理路径): /mnt/d/collections2026/phd_application/nanobot1/milestone2/data/public_memory/public_memory.jsonl, top_k=2
+[BFF] 读取PublicMemory完成: 0 条记录
+[BFF] 读取PublicMemory (物理路径): /mnt/d/collections2026/phd_application/nanobot1/milestone2/data/public_memory/public_memory.jsonl, top_k=2
+[BFF] 读取PublicMemory完成: 0 条记录
+[BFF] 读取PublicMemory (物理路径): /mnt/d/collections2026/phd_application/nanobot1/milestone2/data/public_memory/public_memory.jsonl, top_k=2
+[BFF] 读取PublicMemory完成: 0 条记录
+[BFF] 获取Agent ec137e31 堆段: 0 条
+[BFF] 获取Agent d843e271 堆段: 0 条
+[BFF] 获取Agent d8f9c96b 堆段: 0 条
+[BFF] 获取Agent 5e5a2003 堆段: 0 条
+[BFF] 获取Agent ff472d8a 堆段: 0 条
+[BFF] 获取Agent c776915d 堆段: 0 条
+[BFF] 获取Agent 7b88039b 堆段: 0 条
+[BFF] 获取Agent 92bd2e44 堆段: 0 条
+[BFF] 获取Agent 53da53dd 堆段: 0 条
+[BFF] 获取Agent 301d792c 堆段: 0 条
+[BFF] all-unmerged 获取完成: 0 条
+[BFF] 邻居发现: 所有父子关系已建立
+[BFF] 获取Agent ec137e31 堆段: 0 条
+[BFF] 获取Agent d843e271 堆段: 0 条
+[BFF] 获取Agent d8f9c96b 堆段: 0 条
+[BFF] 获取Agent 5e5a2003 堆段: 0 条
+[BFF] 获取Agent ff472d8a 堆段: 0 条
+[BFF] 获取Agent c776915d 堆段: 0 条
+[BFF] 获取Agent 7b88039b 堆段: 0 条
+[BFF] 获取Agent 92bd2e44 堆段: 0 条
+[BFF] 获取Agent 53da53dd 堆段: 0 条
+[BFF] 获取Agent 301d792c 堆段: 0 条
+[BFF] all-unmerged 获取完成: 0 条
+[BFF] 读取PublicMemory (物理路径): /mnt/d/collections2026/phd_application/nanobot1/milestone2/data/public_memory/public_memory.jsonl, top_k=2
+[BFF] 读取PublicMemory完成: 0 条记录
+2026-04-21 23:20:46,359 - httpx - INFO - HTTP Request: GET http://localhost:3823/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:46,461 - httpx - INFO - HTTP Request: GET http://localhost:3827/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:46,561 - httpx - INFO - HTTP Request: GET http://localhost:3832/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:46,668 - httpx - INFO - HTTP Request: GET http://localhost:3839/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:46,841 - httpx - INFO - HTTP Request: GET http://localhost:3848/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:46,992 - httpx - INFO - HTTP Request: GET http://localhost:3859/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:47,096 - httpx - INFO - HTTP Request: GET http://localhost:3872/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:47,227 - httpx - INFO - HTTP Request: GET http://localhost:3888/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:47,324 - httpx - INFO - HTTP Request: GET http://localhost:3905/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:20:47,440 - httpx - INFO - HTTP Request: GET http://localhost:3924/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:17,544 - httpx - INFO - HTTP Request: GET http://localhost:3823/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:17,640 - httpx - INFO - HTTP Request: GET http://localhost:3827/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:17,777 - httpx - INFO - HTTP Request: GET http://localhost:3832/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:17,873 - httpx - INFO - HTTP Request: GET http://localhost:3839/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:17,985 - httpx - INFO - HTTP Request: GET http://localhost:3848/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:18,117 - httpx - INFO - HTTP Request: GET http://localhost:3859/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:18,240 - httpx - INFO - HTTP Request: GET http://localhost:3872/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:18,342 - httpx - INFO - HTTP Request: GET http://localhost:3888/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:18,450 - httpx - INFO - HTTP Request: GET http://localhost:3905/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:18,546 - httpx - INFO - HTTP Request: GET http://localhost:3924/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:24,845 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=53da53dd "HTTP/1.1 200 OK"
+2026-04-21 23:21:37,154 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=ff472d8a "HTTP/1.1 200 OK"
+2026-04-21 23:21:37,156 - httpx - INFO - HTTP Request: GET http://localhost:3820/task?agent_id=7b88039b "HTTP/1.1 200 OK"
+2026-04-21 23:21:48,690 - httpx - INFO - HTTP Request: GET http://localhost:3823/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:48,788 - httpx - INFO - HTTP Request: GET http://localhost:3827/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:48,888 - httpx - INFO - HTTP Request: GET http://localhost:3832/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:49,040 - httpx - INFO - HTTP Request: GET http://localhost:3839/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:49,148 - httpx - INFO - HTTP Request: GET http://localhost:3848/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:49,254 - httpx - INFO - HTTP Request: GET http://localhost:3859/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:49,375 - httpx - INFO - HTTP Request: GET http://localhost:3872/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:49,497 - httpx - INFO - HTTP Request: GET http://localhost:3888/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:49,624 - httpx - INFO - HTTP Request: GET http://localhost:3905/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:21:49,721 - httpx - INFO - HTTP Request: GET http://localhost:3924/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:22:19,826 - httpx - INFO - HTTP Request: GET http://localhost:3823/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:22:19,913 - httpx - INFO - HTTP Request: GET http://localhost:3827/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:22:20,004 - httpx - INFO - HTTP Request: GET http://localhost:3832/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:22:20,085 - httpx - INFO - HTTP Request: GET http://localhost:3839/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:22:20,181 - httpx - INFO - HTTP Request: GET http://localhost:3848/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:22:20,265 - httpx - INFO - HTTP Request: GET http://localhost:3859/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:22:20,349 - httpx - INFO - HTTP Request: GET http://localhost:3872/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:22:20,437 - httpx - INFO - HTTP Request: GET http://localhost:3888/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:22:20,526 - httpx - INFO - HTTP Request: GET http://localhost:3905/heap/unmerged "HTTP/1.1 200 OK"
+2026-04-21 23:22:20,615 - httpx - INFO - HTTP Request: GET http://localhost:3924/heap/unmerged "HTTP/1.1 200 OK"
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [32547]
