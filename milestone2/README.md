@@ -1,5 +1,27 @@
 # SAYG-Mem 实验复现指南
 
+## Quick Start
+
+```bash
+# 环境要求
+# - Python 3.10+
+# - Docker Desktop
+# - WSL 2（推荐）
+
+# 步骤1：进入目录
+cd d:/collections2026/phd_application/nanobot1/milestone2
+
+# 步骤2：构建 Docker 镜像
+docker build -f shared/Dockerfile.agent -t nanobot-agent:latest .
+docker build -f shared/Dockerfile.bff -t nanobot-bff:latest .
+
+# 步骤3：启动 BFF 服务
+./run_km_system.sh
+
+# 步骤4：运行吞吐量对比实验（核心实验，300秒）
+python sayg_integration/run_throughput_comparison.py
+```
+
 ## 步骤0：准备 Python 虚拟环境
 
 本项目依赖 Python 3.10+ 及若干第三方库。为隔离环境、确保可复现性，请先创建并激活虚拟环境。
